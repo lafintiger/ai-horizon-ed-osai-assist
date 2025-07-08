@@ -1,0 +1,373 @@
+{% extends "base.html" %}
+
+{% block title %}{{ resource.title }} - Analysis & Wisdom {% endblock %}
+
+{% block content %}
+<div class="resource-analysis-page">
+    <!-- Resource Header -->
+    <div class="row align-items-center mb-4">
+        <div class="col-md-8">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/browse/resources">Resources</a></li>
+                    <li class="breadcrumb-item active">{{ resource.title }}</li>
+                </ol>
+            </nav>
+            <h1 class="mb-2">{{ resource.title }}</h1>
+            <p class="text-muted mb-3">{{ resource.description }}</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{{ resource.url }}" target="_blank" class="btn btn-primary">
+                <i class="fas fa-external-link-alt me-2"></i>View Resource
+            </a>
+        </div>
+    </div>
+
+    <!-- Analysis Navigation -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-4">
+                            <div class="p-3 border-end">
+                                <i class="fas fa-brain fa-2x text-primary mb-2"></i>
+                                <h6 class="mb-1">Analysis & Wisdom</h6>
+                                <small class="text-muted">Key insights & takeaways</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 border-end">
+                                <a href="/resources/{{ resource.id }}/quiz" class="text-decoration-none">
+                                    <i class="fas fa-question-circle fa-2x text-info mb-2"></i>
+                                    <h6 class="mb-1">Interactive Quiz</h6>
+                                    <small class="text-muted">Test your knowledge</small>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3">
+                                <a href="/resources/{{ resource.id }}/projects" class="text-decoration-none">
+                                    <i class="fas fa-project-diagram fa-2x text-success mb-2"></i>
+                                    <h6 class="mb-1">Project Ideas</h6>
+                                    <small class="text-muted">Hands-on practice</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if analysis %}
+    <!-- Analysis Content -->
+    <div class="row">
+        <!-- Left Column - Summary & Analysis -->
+        <div class="col-lg-8">
+            <!-- Summary -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-file-alt me-2"></i>Resource Summary
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="lead">{{ analysis.summary }}</p>
+                </div>
+            </div>
+
+            <!-- Key Concepts -->
+            {% if analysis.key_concepts %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-lightbulb me-2"></i>Key Concepts
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for concept in analysis.key_concepts %}
+                        <div class="col-md-6 mb-2">
+                            <span class="badge bg-primary fs-6">{{ concept }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Learning Objectives -->
+            {% if analysis.learning_objectives %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-target me-2"></i>Learning Objectives
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p>{{ analysis.learning_objectives }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Wisdom Extraction -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-gem me-2"></i>Extracted Wisdom
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Key Takeaways -->
+                        {% if analysis.key_takeaways %}
+                        <div class="col-md-6 mb-4">
+                            <h6 class="text-primary">
+                                <i class="fas fa-star me-2"></i>Key Takeaways
+                            </h6>
+                            <ul class="list-unstyled">
+                                {% for takeaway in analysis.key_takeaways %}
+                                <li class="mb-2">
+                                    <i class="fas fa-check-circle text-success me-2"></i>{{ takeaway }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+
+                        <!-- Actionable Insights -->
+                        {% if analysis.actionable_insights %}
+                        <div class="col-md-6 mb-4">
+                            <h6 class="text-info">
+                                <i class="fas fa-rocket me-2"></i>Actionable Insights
+                            </h6>
+                            <ul class="list-unstyled">
+                                {% for insight in analysis.actionable_insights %}
+                                <li class="mb-2">
+                                    <i class="fas fa-arrow-right text-info me-2"></i>{{ insight }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="row">
+                        <!-- Best Practices -->
+                        {% if analysis.best_practices %}
+                        <div class="col-md-6 mb-4">
+                            <h6 class="text-success">
+                                <i class="fas fa-thumbs-up me-2"></i>Best Practices
+                            </h6>
+                            <ul class="list-unstyled">
+                                {% for practice in analysis.best_practices %}
+                                <li class="mb-2">
+                                    <i class="fas fa-shield-alt text-success me-2"></i>{{ practice }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+
+                        <!-- Common Pitfalls -->
+                        {% if analysis.common_pitfalls %}
+                        <div class="col-md-6 mb-4">
+                            <h6 class="text-warning">
+                                <i class="fas fa-exclamation-triangle me-2"></i>Common Pitfalls
+                            </h6>
+                            <ul class="list-unstyled">
+                                {% for pitfall in analysis.common_pitfalls %}
+                                <li class="mb-2">
+                                    <i class="fas fa-exclamation-circle text-warning me-2"></i>{{ pitfall }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column - Metadata & Context -->
+        <div class="col-lg-4">
+            <!-- Resource Metadata -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>Resource Details
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-sm-5"><strong>Type:</strong></div>
+                        <div class="col-sm-7">
+                            <span class="badge bg-secondary">{{ resource.resource_type or 'N/A' }}</span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-5"><strong>Difficulty:</strong></div>
+                        <div class="col-sm-7">
+                            <span class="badge bg-{% if resource.difficulty_level == 'beginner' %}success{% elif resource.difficulty_level == 'intermediate' %}warning{% else %}danger{% endif %}">
+                                {{ resource.difficulty_level or 'N/A' }}
+                            </span>
+                        </div>
+                    </div>
+                    {% if resource.estimated_duration_minutes %}
+                    <div class="row mb-3">
+                        <div class="col-sm-5"><strong>Duration:</strong></div>
+                        <div class="col-sm-7">{{ resource.estimated_duration_minutes }} minutes</div>
+                    </div>
+                    {% endif %}
+                    <div class="row mb-3">
+                        <div class="col-sm-5"><strong>Quality:</strong></div>
+                        <div class="col-sm-7">
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar" style="width: {{ resource.quality_score * 10 }}%">
+                                    {{ "%.1f"|format(resource.quality_score) }}/10
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analysis Metadata -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-chart-line me-2"></i>Analysis Metrics
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-sm-6"><strong>Complexity:</strong></div>
+                        <div class="col-sm-6">
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar bg-info" style="width: {{ (analysis.complexity_score / 10) * 100 }}%">
+                                    {{ "%.1f"|format(analysis.complexity_score) }}/10
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-6"><strong>Practical:</strong></div>
+                        <div class="col-sm-6">
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar bg-success" style="width: {{ (analysis.practical_applicability / 10) * 100 }}%">
+                                    {{ "%.1f"|format(analysis.practical_applicability) }}/10
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-6"><strong>Confidence:</strong></div>
+                        <div class="col-sm-6">
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar bg-primary" style="width: {{ (analysis.analysis_confidence) * 100 }}%">
+                                    {{ "%.0f"|format(analysis.analysis_confidence * 100) }}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prerequisites -->
+            {% if analysis.prerequisites %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-list-check me-2"></i>Prerequisites
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <p>{{ analysis.prerequisites }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Industry Relevance -->
+            {% if analysis.industry_relevance %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-industry me-2"></i>Industry Relevance
+                    </h6>
+                </div>
+                <div class="card-body">
+                    {% for industry in analysis.industry_relevance %}
+                    <span class="badge bg-outline-primary me-2 mb-2">{{ industry }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Related Skills -->
+            {% if skills %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-link me-2"></i>Related Skills
+                    </h6>
+                </div>
+                <div class="card-body">
+                    {% for skill in skills %}
+                    <a href="/skills/{{ skill.id }}" class="btn btn-outline-primary btn-sm me-2 mb-2">
+                        {{ skill.skill_name }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% else %}
+    <!-- No Analysis Available -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h4>Analysis Not Available</h4>
+                    <p class="text-muted">This resource has not been analyzed yet. Analysis includes comprehensive insights, wisdom extraction, and learning guidance.</p>
+                    <div class="mt-4">
+                        <a href="/browse/resources" class="btn btn-primary">
+                            <i class="fas fa-arrow-left me-2"></i>Browse Other Resources
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.resource-analysis-page .card {
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.resource-analysis-page .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.resource-analysis-page .badge {
+    font-size: 0.9em;
+}
+
+.resource-analysis-page .progress {
+    background-color: #e9ecef;
+}
+
+.resource-analysis-page .border-end {
+    border-right: 1px solid #e9ecef !important;
+}
+</style>
+{% endblock %} 

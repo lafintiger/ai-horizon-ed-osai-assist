@@ -1,0 +1,323 @@
+{% extends "base.html" %}
+
+{% block title %}{{ skill.skill_name }} - AI-Horizon Ed Platform{% endblock %}
+
+{% block content %}
+<!-- Skill Header -->
+<div class="skill-detail-header">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h1 class="mb-2">{{ skill.skill_name }}</h1>
+            <p class="lead mb-3">{{ skill.description }}</p>
+            <div class="d-flex flex-wrap gap-3">
+                <span class="badge bg-light text-dark fs-6">
+                    <i class="fas fa-tag me-1"></i>{{ skill.category or 'General' }}
+                </span>
+                <span class="badge bg-{{ 'danger' if urgency_info.urgency_level == 'critical' else 'warning' if urgency_info.urgency_level == 'high' else 'info' }} fs-6">
+                    <i class="fas fa-fire me-1"></i>{{ urgency_info.urgency_level|title }} Priority
+                </span>
+                <span class="badge bg-info text-dark fs-6">
+                    <i class="fas fa-calendar me-1"></i>{{ skill.last_updated.strftime('%B %Y') if skill.last_updated else 'Recently Added' }}
+                </span>
+            </div>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <div class="bg-white bg-opacity-20 p-3 rounded">
+                <h4 class="mb-1">{{ (free_resources|length) + (paid_resources|length) }}</h4>
+                <small>Learning Resources</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Urgency Information -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-{{ 'danger' if urgency_info.urgency_level == 'critical' else 'warning' if urgency_info.urgency_level == 'high' else 'info' }}">
+            <div class="card-header bg-{{ 'danger' if urgency_info.urgency_level == 'critical' else 'warning' if urgency_info.urgency_level == 'high' else 'info' }} text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-exclamation-triangle me-2"></i>{{ urgency_info.reason }}
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="mb-3">{{ urgency_info.explanation }}</p>
+                
+                <div class="row">
+                    <div class="col-md-8">
+                        <h6 class="text-muted">Market Drivers:</h6>
+                        <ul class="list-unstyled">
+                            {% for driver in urgency_info.market_drivers %}
+                            <li><i class="fas fa-check text-success me-2"></i>{{ driver }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="alert alert-{{ 'danger' if urgency_info.urgency_level == 'critical' else 'warning' if urgency_info.urgency_level == 'high' else 'info' }} border-0">
+                            <h6 class="alert-heading">Timeline</h6>
+                            <p class="mb-0">{{ urgency_info.timeline }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Free Learning Resources -->
+{% if free_resources %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-graduation-cap me-2"></i>Free Learning Resources
+                    <span class="badge bg-success ms-2">{{ free_resources|length }} Resources</span>
+                </h5>
+                <small class="text-muted">Open access educational materials and documentation</small>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for path, resource in free_resources %}
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card h-100 border-left-primary">
+                            <div class="card-header bg-{{ 'success' if path.path_type == 'foundation' else 'warning' if path.path_type == 'intermediate' else 'danger' }} text-white">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-uppercase">{{ path.path_type }}</small>
+                                    {% if path.is_required %}
+                                        <span class="badge bg-light text-dark">Required</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="card-title">{{ resource.title }}</h6>
+                                <p class="card-text text-muted small">
+                                    {{ resource.description[:100] }}{% if resource.description|length > 100 %}...{% endif %}
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">
+                                        <i class="fas fa-{{ 'play' if resource.resource_type == 'video' else 'book' if resource.resource_type == 'course' else 'file-alt' }} me-1"></i>
+                                        {{ resource.resource_type|title }}
+                                    </small>
+                                    {% if resource.estimated_duration_minutes %}
+                                    <small class="text-muted">
+                                        <i class="fas fa-clock me-1"></i>
+                                        {{ (resource.estimated_duration_minutes // 60) }}h{{ (resource.estimated_duration_minutes % 60) }}m
+                                    </small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <a href="{{ url_for('resource_detail', resource_id=resource.id) }}" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-eye me-1"></i>View Details
+                                        </a>
+                                        <a href="{{ resource.url }}" target="_blank" class="btn btn-sm btn-outline-success">
+                                            <i class="fas fa-external-link-alt me-1"></i>Direct Link
+                                        </a>
+                                    </div>
+                                    {% if resource.quality_score %}
+                                        {% set quality_score = resource.quality_score %}
+                                        {% if quality_score >= 0.8 %}
+                                            <span class="badge bg-success" title="Excellent Quality">
+                                                🏆 {{ "%.2f"|format(quality_score) }}
+                                            </span>
+                                        {% elif quality_score >= 0.7 %}
+                                            <span class="badge bg-primary" title="High Quality">
+                                                ⭐ {{ "%.2f"|format(quality_score) }}
+                                            </span>
+                                        {% elif quality_score >= 0.6 %}
+                                            <span class="badge bg-info" title="Good Quality">
+                                                👍 {{ "%.2f"|format(quality_score) }}
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-warning" title="Moderate Quality">
+                                                📚 {{ "%.2f"|format(quality_score) }}
+                                            </span>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Paid Learning Resources -->
+{% if paid_resources %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-certificate me-2"></i>Premium Learning Resources
+                    <span class="badge bg-warning ms-2">{{ paid_resources|length }} Resources</span>
+                </h5>
+                <small class="text-muted">Professional courses and certifications (third-party providers)</small>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning border-warning" style="background-color: #fff3cd; border: 2px solid #ffc107; margin-bottom: 20px;">
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-exclamation-triangle me-3 mt-1" style="color: #856404; font-size: 1.2em;"></i>
+                        <div>
+                            <h6 class="alert-heading mb-2" style="color: #856404; font-weight: bold;">Important Disclaimer</h6>
+                            <p class="mb-0" style="color: #856404; line-height: 1.5;">
+                                The inclusion of premium learning resources in this section should not be construed as an endorsement by AI-Horizon Ed Platform. These resources have not been independently reviewed or verified by our team and are provided here solely for convenience and informational purposes. We encourage users to conduct their own research and evaluation before making any purchasing decisions. All resources are offered by third-party educational providers and we do not receive any compensation for their inclusion.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    {% for path, resource in paid_resources %}
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card h-100 border-left-warning">
+                            <div class="card-header bg-{{ 'success' if path.path_type == 'foundation' else 'warning' if path.path_type == 'intermediate' else 'danger' }} text-white">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-uppercase">{{ path.path_type }}</small>
+                                    <span class="badge bg-light text-dark">
+                                        <i class="fas fa-dollar-sign me-1"></i>Paid
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="card-title">{{ resource.title }}</h6>
+                                <p class="card-text text-muted small">
+                                    {{ resource.description[:100] }}{% if resource.description|length > 100 %}...{% endif %}
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">
+                                        <i class="fas fa-{{ 'play' if resource.resource_type == 'video' else 'book' if resource.resource_type == 'course' else 'file-alt' }} me-1"></i>
+                                        {{ resource.resource_type|title }}
+                                    </small>
+                                    {% if resource.estimated_duration_minutes %}
+                                    <small class="text-muted">
+                                        <i class="fas fa-clock me-1"></i>
+                                        {{ (resource.estimated_duration_minutes // 60) }}h{{ (resource.estimated_duration_minutes % 60) }}m
+                                    </small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <a href="{{ url_for('resource_detail', resource_id=resource.id) }}" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-eye me-1"></i>View Details
+                                        </a>
+                                        <a href="{{ resource.url }}" target="_blank" class="btn btn-sm btn-outline-warning">
+                                            <i class="fas fa-external-link-alt me-1"></i>Direct Link
+                                        </a>
+                                    </div>
+                                    {% if resource.quality_score %}
+                                        {% set quality_score = resource.quality_score %}
+                                        {% if quality_score >= 0.8 %}
+                                            <span class="badge bg-success" title="Excellent Quality">
+                                                🏆 {{ "%.2f"|format(quality_score) }}
+                                            </span>
+                                        {% elif quality_score >= 0.7 %}
+                                            <span class="badge bg-primary" title="High Quality">
+                                                ⭐ {{ "%.2f"|format(quality_score) }}
+                                            </span>
+                                        {% elif quality_score >= 0.6 %}
+                                            <span class="badge bg-info" title="Good Quality">
+                                                👍 {{ "%.2f"|format(quality_score) }}
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-warning" title="Moderate Quality">
+                                                📚 {{ "%.2f"|format(quality_score) }}
+                                            </span>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- No Resources Message -->
+{% if not free_resources and not paid_resources %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-book fa-3x text-muted mb-3"></i>
+                <h4>Learning Resources Coming Soon</h4>
+                <p class="text-muted">
+                    We're actively curating high-quality learning resources for this skill. 
+                    Check back soon for comprehensive learning materials!
+                </p>
+                {% if session.get('admin_logged_in') %}
+                    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Add Resources
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Navigation -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Skills
+            </a>
+            <div>
+                <a href="{{ url_for('browse_resources') }}" class="btn btn-outline-info">
+                    <i class="fas fa-search me-2"></i>Browse All Resources
+                </a>
+                <button onclick="navigator.share ? navigator.share({title: '{{ skill.skill_name }}', url: window.location.href}) : alert('Sharing not supported')" class="btn btn-outline-success">
+                    <i class="fas fa-share me-2"></i>Share
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Track resource engagement
+var skillId = {{ skill.id }};
+
+// Track when user clicks on a resource
+document.querySelectorAll('a[href*="http"]').forEach(function(link) {
+    link.addEventListener('click', function() {
+        // Save to localStorage for progress tracking
+        let engagement = JSON.parse(localStorage.getItem('aiHorizonEngagement') || '{}');
+        if (!engagement[skillId]) {
+            engagement[skillId] = {
+                resources_viewed: [],
+                last_activity: new Date().toISOString()
+            };
+        }
+        
+        let resourceUrl = this.href;
+        if (!engagement[skillId].resources_viewed.includes(resourceUrl)) {
+            engagement[skillId].resources_viewed.push(resourceUrl);
+        }
+        engagement[skillId].last_activity = new Date().toISOString();
+        
+        localStorage.setItem('aiHorizonEngagement', JSON.stringify(engagement));
+    });
+});
+
+// Simple engagement tracking without notifications
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Resource engagement tracking enabled for skill ' + skillId);
+});
+</script>
+{% endblock %} 

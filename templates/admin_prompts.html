@@ -1,0 +1,345 @@
+{% extends "base.html" %}
+
+{% block title %}AI Prompts - Admin Panel{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h2">
+                    <i class="fas fa-cog me-2"></i>
+                    AI Prompts Configuration
+                </h1>
+                <div>
+                    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle me-2"></i>
+        <strong>About AI Prompts:</strong> These are the prompts used by the AI system to discover skills, find resources, and analyze content. 
+        Understanding these prompts helps you see how the AI makes decisions and what kind of results to expect.
+    </div>
+
+    <!-- Prompts Container -->
+    <div id="prompts-container">
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3 text-muted">Loading AI prompts...</p>
+        </div>
+    </div>
+
+    <!-- Masterful Prompt Generation -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="mb-0">
+                <i class="fas fa-magic me-2"></i>
+                Masterful Prompt Generation
+            </h5>
+        </div>
+        <div class="card-body">
+            <p class="mb-3">
+                Generate an AI-optimized prompt for resource discovery based on recently discovered skills.
+                This creates a comprehensive prompt that targets the most valuable resources for emerging skills.
+            </p>
+            <button class="btn btn-primary" onclick="generateMasterfulPrompt()">
+                <i class="fas fa-wand-magic-sparkles me-2"></i>Generate Masterful Prompt
+            </button>
+        </div>
+    </div>
+
+    <!-- Masterful Prompt Results -->
+    <div id="masterful-prompt-results" class="mt-4" style="display: none;">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-sparkles me-2"></i>Generated Masterful Prompt
+                </h5>
+            </div>
+            <div class="card-body">
+                <div id="masterful-prompt-content"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Load prompts on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadPrompts();
+});
+
+async function loadPrompts() {
+    try {
+        const response = await fetch('/api/admin/ai/prompts');
+        const prompts = await response.json();
+        
+        const container = document.getElementById('prompts-container');
+        container.innerHTML = '';
+        
+        Object.entries(prompts).forEach(([key, prompt]) => {
+            const promptCard = createPromptCard(key, prompt);
+            container.appendChild(promptCard);
+        });
+        
+    } catch (error) {
+        console.error('Error loading prompts:', error);
+        document.getElementById('prompts-container').innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Error loading prompts: ${error.message}
+            </div>
+        `;
+    }
+}
+
+function createPromptCard(key, prompt) {
+    const card = document.createElement('div');
+    card.className = 'card mb-4';
+    
+    card.innerHTML = `
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-brain me-2"></i>
+                    ${prompt.name}
+                </h5>
+                <button class="btn btn-sm btn-outline-secondary" onclick="copyPrompt('${key}')">
+                    <i class="fas fa-copy me-1"></i>Copy
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <p class="text-muted mb-3">${prompt.description}</p>
+            
+            <div class="mb-4">
+                <h6 class="fw-bold">
+                    <i class="fas fa-user-cog me-1"></i>System Prompt:
+                </h6>
+                <div class="bg-light p-3 rounded">
+                    <pre class="mb-0 small">${prompt.system_prompt}</pre>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <h6 class="fw-bold">
+                    <i class="fas fa-user me-1"></i>User Prompt Template:
+                </h6>
+                <div class="bg-light p-3 rounded">
+                    <pre class="mb-0 small">${prompt.user_prompt_template}</pre>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <small class="text-muted">
+                        <i class="fas fa-key me-1"></i>Key: <code>${key}</code>
+                    </small>
+                </div>
+                <div class="col-md-6 text-end">
+                    <button class="btn btn-sm btn-outline-primary" onclick="testPrompt('${key}')">
+                        <i class="fas fa-play me-1"></i>Test Prompt
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    return card;
+}
+
+async function copyPrompt(key) {
+    try {
+        const response = await fetch('/api/admin/ai/prompts');
+        const prompts = await response.json();
+        const prompt = prompts[key];
+        
+        const fullPrompt = `SYSTEM: ${prompt.system_prompt}\n\nUSER: ${prompt.user_prompt_template}`;
+        
+        await navigator.clipboard.writeText(fullPrompt);
+        
+        // Show success feedback
+        const button = event.target.closest('button');
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check me-1"></i>Copied!';
+        button.classList.add('btn-success');
+        button.classList.remove('btn-outline-secondary');
+        
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.classList.remove('btn-success');
+            button.classList.add('btn-outline-secondary');
+        }, 2000);
+        
+    } catch (error) {
+        console.error('Error copying prompt:', error);
+        alert('Failed to copy prompt');
+    }
+}
+
+function testPrompt(key) {
+    alert(`Testing prompt functionality for ${key} - this feature will be implemented in a future update!`);
+}
+
+async function generateMasterfulPrompt() {
+    const button = event.target;
+    const originalText = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Generating...';
+    button.disabled = true;
+    
+    try {
+        // Get recent skills first
+        const skillsResponse = await fetch('/api/skills');
+        const skills = await skillsResponse.json();
+        
+        // Take the top 5 most recent skills
+        const recentSkills = skills.slice(0, 5);
+        
+        const response = await fetch('/api/admin/ai/create-resource-prompt', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                skills: recentSkills
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            displayMasterfulPrompt(result.masterful_prompt);
+        } else {
+            throw new Error(result.error || 'Failed to generate masterful prompt');
+        }
+        
+    } catch (error) {
+        console.error('Error generating masterful prompt:', error);
+        alert('Error generating masterful prompt: ' + error.message);
+    } finally {
+        button.innerHTML = originalText;
+        button.disabled = false;
+    }
+}
+
+function displayMasterfulPrompt(promptData) {
+    const container = document.getElementById('masterful-prompt-content');
+    
+    container.innerHTML = `
+        <div class="mb-4">
+            <h6 class="fw-bold">
+                <i class="fas fa-lightbulb me-1"></i>Rationale:
+            </h6>
+            <div class="bg-light p-3 rounded">
+                <p class="mb-0">${promptData.rationale}</p>
+            </div>
+        </div>
+        
+        <div class="mb-4">
+            <h6 class="fw-bold">
+                <i class="fas fa-crosshairs me-1"></i>Target Skills:
+            </h6>
+            <div class="mb-2">
+                ${promptData.target_skills.map(skill => 
+                    `<span class="badge bg-primary me-1">${skill}</span>`
+                ).join('')}
+            </div>
+        </div>
+        
+        <div class="mb-4">
+            <h6 class="fw-bold">
+                <i class="fas fa-list me-1"></i>Expected Resource Types:
+            </h6>
+            <div class="mb-2">
+                ${promptData.expected_resource_types.map(type => 
+                    `<span class="badge bg-secondary me-1">${type}</span>`
+                ).join('')}
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <h6 class="fw-bold">
+                <i class="fas fa-magic me-1"></i>Masterful Prompt:
+            </h6>
+            <div class="bg-dark text-light p-3 rounded">
+                <pre class="mb-0 text-light">${promptData.masterful_prompt}</pre>
+            </div>
+        </div>
+        
+        <div class="text-end">
+            <button class="btn btn-outline-secondary" onclick="copyMasterfulPrompt()">
+                <i class="fas fa-copy me-1"></i>Copy Prompt
+            </button>
+            <button class="btn btn-primary" onclick="useMasterfulPrompt()">
+                <i class="fas fa-rocket me-1"></i>Use This Prompt
+            </button>
+        </div>
+    `;
+    
+    document.getElementById('masterful-prompt-results').style.display = 'block';
+    
+    // Scroll to results
+    document.getElementById('masterful-prompt-results').scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+    });
+}
+
+async function copyMasterfulPrompt() {
+    try {
+        const promptText = document.querySelector('#masterful-prompt-content pre').textContent;
+        await navigator.clipboard.writeText(promptText);
+        
+        // Show success feedback
+        const button = event.target.closest('button');
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check me-1"></i>Copied!';
+        button.classList.add('btn-success');
+        button.classList.remove('btn-outline-secondary');
+        
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.classList.remove('btn-success');
+            button.classList.add('btn-outline-secondary');
+        }, 2000);
+        
+    } catch (error) {
+        console.error('Error copying masterful prompt:', error);
+        alert('Failed to copy prompt');
+    }
+}
+
+function useMasterfulPrompt() {
+    alert('Integration with resource discovery will be implemented in the next update!');
+}
+</script>
+
+<style>
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+.card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.bg-dark pre {
+    color: #f8f9fa !important;
+}
+</style>
+{% endblock %} 

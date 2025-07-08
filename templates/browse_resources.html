@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+
+{% block title %}Browse Resources - AI-Horizon Ed{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h2">
+                    <i class="fas fa-book-open me-2"></i>
+                    Educational Resources
+                </h1>
+                <div class="text-muted">
+                    {{ resources.total }} resources found
+                </div>
+            </div>
+            
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <i class="fas fa-robot me-2"></i>
+                <strong>AI Quality Assessment:</strong> Resources are ranked using AI analysis of content freshness, credibility, relevance, technical depth, and accessibility.
+                <small class="d-block mt-1">
+                    🏆 Excellent (0.8+) • ⭐ High (0.7+) • 👍 Good (0.6+) • 📚 Moderate (below 0.6)
+                </small>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="GET" action="{{ url_for('browse_resources') }}">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label for="search" class="form-label">Search</label>
+                        <input type="text" class="form-control" id="search" name="search" 
+                               value="{{ current_search }}" placeholder="Search resources...">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="category" class="form-label">Category</label>
+                        <select class="form-select" id="category" name="category">
+                            <option value="">All Categories</option>
+                            {% for category in categories %}
+                                <option value="{{ category }}" {% if current_category == category %}selected{% endif %}>
+                                    {{ category }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="resource_type" class="form-label">Resource Type</label>
+                        <select class="form-select" id="resource_type" name="resource_type">
+                            <option value="">All Types</option>
+                            {% for resource_type in resource_types %}
+                                <option value="{{ resource_type }}" {% if current_resource_type == resource_type %}selected{% endif %}>
+                                    {{ resource_type|title }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">&nbsp;</label>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search me-2"></i>Filter
+                            </button>
+                            <a href="{{ url_for('browse_resources') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Clear
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Resources Grid -->
+    <div class="row">
+        {% for resource in resources.items %}
+            <div class="col-lg-6 col-xl-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title">
+                                <a href="{{ url_for('resource_detail', resource_id=resource.id) }}" class="text-decoration-none">
+                                    {{ resource.title }}
+                                </a>
+                            </h5>
+                            <div class="ms-2">
+                                {% if resource.quality_score %}
+                                    {% set quality_score = resource.quality_score %}
+                                    {% if quality_score >= 0.8 %}
+                                        <span class="badge bg-success" title="Excellent Quality (AI-Assessed)">
+                                            🏆 {{ "%.2f"|format(quality_score) }}
+                                        </span>
+                                    {% elif quality_score >= 0.7 %}
+                                        <span class="badge bg-primary" title="High Quality (AI-Assessed)">
+                                            ⭐ {{ "%.2f"|format(quality_score) }}
+                                        </span>
+                                    {% elif quality_score >= 0.6 %}
+                                        <span class="badge bg-info" title="Good Quality (AI-Assessed)">
+                                            👍 {{ "%.2f"|format(quality_score) }}
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-warning" title="Moderate Quality (AI-Assessed)">
+                                            📚 {{ "%.2f"|format(quality_score) }}
+                                        </span>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <p class="card-text">{{ resource.description[:150] }}{% if resource.description|length > 150 %}...{% endif %}</p>
+                        
+                        <div class="mb-3">
+                            <small class="text-muted">
+                                <i class="fas fa-tag me-1"></i>{{ resource.resource_type|title }}
+                                {% if resource.difficulty_level %}
+                                    <span class="mx-2">•</span>
+                                    <i class="fas fa-layer-group me-1"></i>{{ resource.difficulty_level }}
+                                {% endif %}
+                                {% if resource.estimated_duration_minutes %}
+                                    <span class="mx-2">•</span>
+                                    <i class="fas fa-clock me-1"></i>{{ resource.estimated_duration_minutes }} min
+                                {% endif %}
+                            </small>
+                        </div>
+                        
+                        {% if resource.ai_analysis_summary %}
+                            <div class="alert alert-info small mb-3">
+                                <i class="fas fa-brain me-1"></i>
+                                <strong>AI Analysis:</strong> {{ resource.ai_analysis_summary[:100] }}{% if resource.ai_analysis_summary|length > 100 %}...{% endif %}
+                            </div>
+                        {% endif %}
+                        
+                        <div class="mt-auto">
+                            <a href="{{ url_for('resource_detail', resource_id=resource.id) }}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-eye me-1"></i>View Details
+                            </a>
+                            <a href="{{ resource.url }}" target="_blank" class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-external-link-alt me-1"></i>Open Resource
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if resources.pages > 1 %}
+        <nav aria-label="Resource pagination">
+            <ul class="pagination justify-content-center">
+                {% if resources.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('browse_resources', page=resources.prev_num, category=current_category, resource_type=current_resource_type, search=current_search) }}">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                {% endif %}
+                
+                {% for page_num in resources.iter_pages() %}
+                    {% if page_num %}
+                        {% if page_num != resources.page %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('browse_resources', page=page_num, category=current_category, resource_type=current_resource_type, search=current_search) }}">
+                                    {{ page_num }}
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ page_num }}</span>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if resources.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('browse_resources', page=resources.next_num, category=current_category, resource_type=current_resource_type, search=current_search) }}">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+
+    <!-- No Results -->
+    {% if resources.total == 0 %}
+        <div class="text-center py-5">
+            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+            <h4 class="text-muted">No Resources Found</h4>
+            <p class="text-muted">Try adjusting your search filters or browse all resources.</p>
+            <a href="{{ url_for('browse_resources') }}" class="btn btn-primary">
+                <i class="fas fa-list me-2"></i>Show All Resources
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+.card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card-title a {
+    color: inherit;
+}
+
+.card-title a:hover {
+    color: #0d6efd;
+}
+</style>
+{% endblock %} 

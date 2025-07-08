@@ -1,0 +1,328 @@
+{% extends "base.html" %}
+
+{% block title %}API Documentation - AI-Horizon Ed{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h2">
+                    <i class="fas fa-code me-2"></i>
+                    API Documentation
+                </h1>
+                <div class="text-muted">
+                    RESTful API for AI-Horizon Ed Platform
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle me-2"></i>
+        <strong>About the API:</strong> Our RESTful API provides access to emerging AI skills and educational resources. 
+        All endpoints return JSON data and support standard HTTP methods.
+    </div>
+
+    <!-- API Endpoints -->
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-3">
+                <i class="fas fa-link me-2"></i>Available Endpoints
+            </h3>
+
+            <!-- Skills Endpoints -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-brain me-2"></i>Skills Endpoints
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="endpoint mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="badge bg-primary me-2">GET</span>
+                                <code>/api/skills</code>
+                            </div>
+                            <a href="/api/skills" target="_blank" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-external-link-alt me-1"></i>Try it
+                            </a>
+                        </div>
+                        <p class="text-muted mb-2">Get all active emerging skills</p>
+                        <small class="text-muted">
+                            <strong>Response:</strong> Array of skill objects with id, skill_name, description, category, urgency_score, etc.
+                        </small>
+                    </div>
+
+                    <div class="endpoint mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="badge bg-primary me-2">GET</span>
+                                <code>/api/skills/{skill_id}/resources</code>
+                            </div>
+                            <a href="/api/skills/8/resources" target="_blank" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-external-link-alt me-1"></i>Try it
+                            </a>
+                        </div>
+                        <p class="text-muted mb-2">Get all educational resources for a specific skill</p>
+                        <small class="text-muted">
+                            <strong>Response:</strong> Array of resource objects with learning path information
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resources Endpoints -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-book-open me-2"></i>Resources Endpoints
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="endpoint mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="badge bg-primary me-2">GET</span>
+                                <code>/api/resources/{resource_id}</code>
+                            </div>
+                            <a href="/api/resources/1" target="_blank" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-external-link-alt me-1"></i>Try it
+                            </a>
+                        </div>
+                        <p class="text-muted mb-2">Get detailed information about a specific educational resource</p>
+                        <small class="text-muted">
+                            <strong>Response:</strong> Resource object with full details including AI analysis
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Endpoints -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-shield-alt me-2"></i>Admin Endpoints
+                        <span class="badge bg-warning ms-2">Authentication Required</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="endpoint mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="badge bg-success me-2">POST</span>
+                                <code>/api/admin/ai/discover-skills</code>
+                            </div>
+                            <span class="badge bg-secondary">Admin Only</span>
+                        </div>
+                        <p class="text-muted mb-2">Discover new emerging skills using AI</p>
+                        <small class="text-muted">
+                            <strong>Body:</strong> {"domain": "AI and Cybersecurity"}<br>
+                            <strong>Response:</strong> Discovery results with new skills found
+                        </small>
+                    </div>
+
+                    <div class="endpoint mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="badge bg-success me-2">POST</span>
+                                <code>/api/admin/ai/discover-resources/{skill_id}</code>
+                            </div>
+                            <span class="badge bg-secondary">Admin Only</span>
+                        </div>
+                        <p class="text-muted mb-2">Discover educational resources for a specific skill using AI</p>
+                        <small class="text-muted">
+                            <strong>Response:</strong> Discovery results with new resources found
+                        </small>
+                    </div>
+
+                    <div class="endpoint mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="badge bg-primary me-2">GET</span>
+                                <code>/api/admin/ai/status</code>
+                            </div>
+                            <span class="badge bg-secondary">Admin Only</span>
+                        </div>
+                        <p class="text-muted mb-2">Check AI services availability status</p>
+                        <small class="text-muted">
+                            <strong>Response:</strong> {"ai_services_available": true/false}
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Response Format -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-file-code me-2"></i>Response Format
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <h6>Skills Object Structure</h6>
+                    <pre class="bg-light p-3 rounded mb-3"><code>{
+  "id": 1,
+  "skill_name": "AI Security Engineering",
+  "description": "Specialized engineering role for securing AI systems",
+  "category": "AI/ML",
+  "urgency_score": 8.5,
+  "market_demand_evidence": "High demand evidence...",
+  "created_date": "2025-01-01T00:00:00",
+  "last_updated": "2025-01-01T00:00:00",
+  "status": "active",
+  "source": "ai_horizon_discovery"
+}</code></pre>
+
+                    <h6>Resource Object Structure</h6>
+                    <pre class="bg-light p-3 rounded mb-3"><code>{
+  "id": 1,
+  "title": "AI Security Fundamentals Course",
+  "description": "Comprehensive course covering AI security basics",
+  "url": "https://example.com/course",
+  "resource_type": "course",
+  "difficulty_level": "intermediate",
+  "estimated_duration_minutes": 120,
+  "quality_score": 4.5,
+  "ai_analysis_summary": "High-quality content with practical examples",
+  "created_date": "2025-01-01T00:00:00",
+  "status": "approved"
+}</code></pre>
+                </div>
+            </div>
+
+            <!-- Usage Examples -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-code me-2"></i>Usage Examples
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <h6>JavaScript/Fetch API</h6>
+                    <pre class="bg-dark text-light p-3 rounded mb-3"><code>// Get all skills
+fetch('/api/skills')
+  .then(response => response.json())
+  .then(skills => console.log(skills));
+
+// Get resources for a specific skill
+fetch('/api/skills/1/resources')
+  .then(response => response.json())
+  .then(resources => console.log(resources));</code></pre>
+
+                    <h6>Python/Requests</h6>
+                    <pre class="bg-dark text-light p-3 rounded mb-3"><code>import requests
+
+# Get all skills
+response = requests.get('https://ed.theaihorizon.org/api/skills')
+skills = response.json()
+
+# Get specific resource
+response = requests.get('https://ed.theaihorizon.org/api/resources/1')
+resource = response.json()</code></pre>
+
+                    <h6>cURL</h6>
+                    <pre class="bg-dark text-light p-3 rounded mb-3"><code># Get all skills
+curl -X GET https://ed.theaihorizon.org/api/skills
+
+# Get resources for skill ID 1
+curl -X GET https://ed.theaihorizon.org/api/skills/1/resources</code></pre>
+                </div>
+            </div>
+
+            <!-- Rate Limiting -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-shield-alt me-2"></i>Rate Limiting & Authentication
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Rate Limits</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i>Public endpoints: 100 requests/minute</li>
+                                <li><i class="fas fa-check text-success me-2"></i>No authentication required for read endpoints</li>
+                                <li><i class="fas fa-info-circle text-info me-2"></i>Admin endpoints require session authentication</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Response Headers</h6>
+                            <ul class="list-unstyled">
+                                <li><code>Content-Type: application/json</code></li>
+                                <li><code>Access-Control-Allow-Origin: *</code></li>
+                                <li><code>Cache-Control: public, max-age=300</code></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Codes -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list me-2"></i>HTTP Status Codes
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Success Codes</h6>
+                            <ul class="list-unstyled">
+                                <li><span class="badge bg-success me-2">200</span>OK - Request successful</li>
+                                <li><span class="badge bg-info me-2">201</span>Created - Resource created successfully</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Error Codes</h6>
+                            <ul class="list-unstyled">
+                                <li><span class="badge bg-warning me-2">400</span>Bad Request - Invalid request format</li>
+                                <li><span class="badge bg-danger me-2">401</span>Unauthorized - Authentication required</li>
+                                <li><span class="badge bg-danger me-2">404</span>Not Found - Resource not found</li>
+                                <li><span class="badge bg-danger me-2">500</span>Internal Server Error - Server error</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.endpoint {
+    border-left: 4px solid #0d6efd;
+    padding-left: 15px;
+}
+
+.endpoint:not(:last-child) {
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 15px;
+}
+
+pre {
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+code {
+    color: #d63384;
+}
+
+.bg-dark code {
+    color: #f8f9fa;
+}
+
+.card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+</style>
+{% endblock %} 

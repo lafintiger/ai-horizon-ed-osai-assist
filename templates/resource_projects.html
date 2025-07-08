@@ -1,0 +1,380 @@
+{% extends "base.html" %}
+
+{% block title %}{{ resource.title }} - Project Ideas {% endblock %}
+
+{% block content %}
+<div class="projects-page">
+    <!-- Resource Header -->
+    <div class="row align-items-center mb-4">
+        <div class="col-md-8">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/browse/resources">Resources</a></li>
+                    <li class="breadcrumb-item"><a href="/resources/{{ resource.id }}/analysis">{{ resource.title }}</a></li>
+                    <li class="breadcrumb-item active">Projects</li>
+                </ol>
+            </nav>
+            <h1 class="mb-2">{{ resource.title }}</h1>
+            <p class="text-muted mb-3">Hands-on project ideas to practice and apply your learning</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{{ resource.url }}" target="_blank" class="btn btn-outline-primary">
+                <i class="fas fa-external-link-alt me-2"></i>View Resource
+            </a>
+        </div>
+    </div>
+
+    <!-- Analysis Navigation -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-4">
+                            <div class="p-3 border-end">
+                                <a href="/resources/{{ resource.id }}/analysis" class="text-decoration-none">
+                                    <i class="fas fa-brain fa-2x text-muted mb-2"></i>
+                                    <h6 class="mb-1">Analysis & Wisdom</h6>
+                                    <small class="text-muted">Key insights & takeaways</small>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 border-end">
+                                <a href="/resources/{{ resource.id }}/quiz" class="text-decoration-none">
+                                    <i class="fas fa-question-circle fa-2x text-muted mb-2"></i>
+                                    <h6 class="mb-1">Interactive Quiz</h6>
+                                    <small class="text-muted">Test your knowledge</small>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3">
+                                <i class="fas fa-project-diagram fa-2x text-success mb-2"></i>
+                                <h6 class="mb-1">Project Ideas</h6>
+                                <small class="text-muted">Hands-on practice</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if projects %}
+    <!-- Projects Content -->
+    <div class="row">
+        <div class="col-lg-8">
+            {% for project in projects %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h5 class="mb-0">
+                                <i class="fas fa-project-diagram me-2"></i>{{ project.title }}
+                            </h5>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <span class="badge bg-{% if project.difficulty_level == 'beginner' %}success{% elif project.difficulty_level == 'intermediate' %}warning{% else %}danger{% endif %} fs-6">
+                                {{ project.difficulty_level.title() }}
+                            </span>
+                            {% if project.estimated_time_hours %}
+                            <span class="badge bg-secondary fs-6 ms-2">
+                                {{ project.estimated_time_hours }}h
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Project Description -->
+                    <p class="lead mb-4">{{ project.description }}</p>
+
+                    <!-- Project Context -->
+                    {% if project.real_world_context %}
+                    <div class="alert alert-info mb-4">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        <strong>Real-World Context:</strong> {{ project.real_world_context }}
+                    </div>
+                    {% endif %}
+
+                    <div class="row">
+                        <!-- Learning Objectives -->
+                        {% if project.objectives %}
+                        <div class="col-md-6 mb-4">
+                            <h6 class="text-primary">
+                                <i class="fas fa-target me-2"></i>Learning Objectives
+                            </h6>
+                            <ul class="list-unstyled">
+                                {% for objective in project.objectives %}
+                                <li class="mb-2">
+                                    <i class="fas fa-check-circle text-success me-2"></i>{{ objective }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+
+                        <!-- Skills Practiced -->
+                        {% if project.skills_practiced %}
+                        <div class="col-md-6 mb-4">
+                            <h6 class="text-info">
+                                <i class="fas fa-cogs me-2"></i>Skills Practiced
+                            </h6>
+                            <div class="d-flex flex-wrap">
+                                {% for skill in project.skills_practiced %}
+                                <span class="badge bg-info me-2 mb-2">{{ skill }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="row">
+                        <!-- Deliverables -->
+                        {% if project.deliverables %}
+                        <div class="col-md-6 mb-4">
+                            <h6 class="text-success">
+                                <i class="fas fa-flag-checkered me-2"></i>Deliverables
+                            </h6>
+                            <ul class="list-unstyled">
+                                {% for deliverable in project.deliverables %}
+                                <li class="mb-2">
+                                    <i class="fas fa-arrow-right text-success me-2"></i>{{ deliverable }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+
+                        <!-- Success Criteria -->
+                        {% if project.success_criteria %}
+                        <div class="col-md-6 mb-4">
+                            <h6 class="text-warning">
+                                <i class="fas fa-trophy me-2"></i>Success Criteria
+                            </h6>
+                            <ul class="list-unstyled">
+                                {% for criteria in project.success_criteria %}
+                                <li class="mb-2">
+                                    <i class="fas fa-star text-warning me-2"></i>{{ criteria }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Required Tools -->
+                    {% if project.required_tools %}
+                    <div class="mb-4">
+                        <h6 class="text-secondary">
+                            <i class="fas fa-tools me-2"></i>Required Tools & Technologies
+                        </h6>
+                        <div class="d-flex flex-wrap">
+                            {% for tool in project.required_tools %}
+                            <span class="badge bg-secondary me-2 mb-2">{{ tool }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Concepts Applied -->
+                    {% if project.concepts_applied %}
+                    <div class="mb-4">
+                        <h6 class="text-primary">
+                            <i class="fas fa-brain me-2"></i>Concepts from Resource
+                        </h6>
+                        <div class="d-flex flex-wrap">
+                            {% for concept in project.concepts_applied %}
+                            <span class="badge bg-primary me-2 mb-2">{{ concept }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Project Type and Industry Context -->
+                    <div class="row">
+                        {% if project.project_type %}
+                        <div class="col-md-6">
+                            <small class="text-muted">Project Type:</small>
+                            <p class="mb-0">
+                                <span class="badge bg-outline-secondary">{{ project.project_type.title() }}</span>
+                            </p>
+                        </div>
+                        {% endif %}
+                        {% if project.industry_context %}
+                        <div class="col-md-6">
+                            <small class="text-muted">Industry Context:</small>
+                            <p class="mb-0">
+                                <span class="badge bg-outline-secondary">{{ project.industry_context.replace('_', ' ').title() }}</span>
+                            </p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Project Overview -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-chart-bar me-2"></i>Projects Overview
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-sm-6"><strong>Total:</strong></div>
+                        <div class="col-sm-6">{{ projects|length }} projects</div>
+                    </div>
+                    
+                    {% set difficulty_counts = {'beginner': 0, 'intermediate': 0, 'advanced': 0} %}
+                    {% for project in projects %}
+                        {% if difficulty_counts.update({project.difficulty_level: difficulty_counts[project.difficulty_level] + 1}) %}{% endif %}
+                    {% endfor %}
+                    
+                    {% for difficulty, count in difficulty_counts.items() %}
+                    {% if count > 0 %}
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <span class="badge bg-{% if difficulty == 'beginner' %}success{% elif difficulty == 'intermediate' %}warning{% else %}danger{% endif %}">
+                                {{ difficulty.title() }}:
+                            </span>
+                        </div>
+                        <div class="col-sm-6">{{ count }}</div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                    
+                    {% set total_hours = projects|sum(attribute='estimated_time_hours') %}
+                    {% if total_hours %}
+                    <div class="row mt-3">
+                        <div class="col-sm-6"><strong>Total Time:</strong></div>
+                        <div class="col-sm-6">~{{ total_hours }} hours</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Getting Started -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-play-circle me-2"></i>Getting Started
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <ol class="mb-0">
+                        <li class="mb-2">Start with <span class="badge bg-success">beginner</span> projects if you're new to the topic</li>
+                        <li class="mb-2">Review the resource material before beginning</li>
+                        <li class="mb-2">Set up the required tools and technologies</li>
+                        <li class="mb-2">Follow the learning objectives step by step</li>
+                        <li class="mb-2">Document your progress and learnings</li>
+                        <li>Share your completed projects for feedback</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Resource Context -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>Resource Details
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-sm-5"><strong>Type:</strong></div>
+                        <div class="col-sm-7">
+                            <span class="badge bg-secondary">{{ resource.resource_type or 'N/A' }}</span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-5"><strong>Difficulty:</strong></div>
+                        <div class="col-sm-7">
+                            <span class="badge bg-{% if resource.difficulty_level == 'beginner' %}success{% elif resource.difficulty_level == 'intermediate' %}warning{% else %}danger{% endif %}">
+                                {{ resource.difficulty_level or 'N/A' }}
+                            </span>
+                        </div>
+                    </div>
+                    {% if resource.estimated_duration_minutes %}
+                    <div class="row mb-3">
+                        <div class="col-sm-5"><strong>Duration:</strong></div>
+                        <div class="col-sm-7">{{ resource.estimated_duration_minutes }} minutes</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Related Skills -->
+            {% if skills %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-link me-2"></i>Related Skills
+                    </h6>
+                </div>
+                <div class="card-body">
+                    {% for skill in skills %}
+                    <a href="/skills/{{ skill.id }}" class="btn btn-outline-primary btn-sm me-2 mb-2">
+                        {{ skill.skill_name }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- AI Generation Info -->
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-robot me-2"></i>AI-Generated Content
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <p class="mb-2">
+                        <small class="text-muted">
+                            These project ideas were generated using AI to provide practical, hands-on learning experiences based on the resource content.
+                        </small>
+                    </p>
+                    <p class="mb-0">
+                        <small class="text-muted">
+                            Projects are designed to reinforce learning through real-world application and skill development.
+                        </small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <!-- No Projects Available -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-project-diagram fa-3x text-muted mb-3"></i>
+                    <h4>Projects Not Available</h4>
+                    <p class="text-muted">This resource doesn't have project ideas yet. Projects are generated automatically to provide hands-on practice opportunities.</p>
+                    <div class="mt-4">
+                        <a href="/resources/{{ resource.id }}/analysis" class="btn btn-primary">
+                            <i class="fas fa-brain me-2"></i>View Analysis
+                        </a>
+                        <a href="/resources/{{ resource.id }}/quiz" class="btn btn-outline-info ms-2">
+                            <i class="fas fa-question-circle me-2"></i>Take Quiz
+                        </a>
+                        <a href="/browse/resources" class="btn btn-outline-secondary ms-2">
+                            <i class="fas fa-arrow-left me-2"></i>Browse Resources
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %} 

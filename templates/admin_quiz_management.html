@@ -1,0 +1,357 @@
+{% extends "base.html" %}
+
+{% block title %}Quiz Management - AI-Horizon Ed Platform{% endblock %}
+
+{% block content %}
+<!-- Quiz Management Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1><i class="fas fa-question-circle me-2"></i>Quiz Management</h1>
+        <p class="text-muted">Manage and standardize quiz questions across all resources</p>
+    </div>
+    <div>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Admin
+        </a>
+    </div>
+</div>
+
+<!-- Quiz Statistics -->
+<div class="row mb-4">
+    {% if stats.get('error') %}
+    <div class="col-12">
+        <div class="alert alert-danger">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <strong>Error:</strong> {{ stats.error }}
+        </div>
+    </div>
+    {% else %}
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body text-center">
+                <h3>{{ stats.total_quizzes }}</h3>
+                <p class="mb-0">Total Quizzes</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body text-center">
+                <h3>{{ stats.quizzes_with_5_questions }}</h3>
+                <p class="mb-0">Complete (5 Q's)</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body text-center">
+                <h3>{{ stats.quizzes_needing_updates }}</h3>
+                <p class="mb-0">Need Updates</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body text-center">
+                <h3>{{ "%.1f"|format((stats.quizzes_with_5_questions / stats.total_quizzes * 100) if stats.total_quizzes > 0 else 0) }}%</h3>
+                <p class="mb-0">Completion Rate</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Action Buttons -->
+{% if not stats.get('error') and stats.quizzes_needing_updates > 0 %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-warning">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0">
+                    <i class="fas fa-tools me-2"></i>Standardization Actions
+                </h5>
+            </div>
+            <div class="card-body">
+                <p>{{ stats.quizzes_needing_updates }} quizzes need to be standardized to 5 questions each.</p>
+                <button id="standardizeAllBtn" class="btn btn-warning me-3">
+                    <i class="fas fa-magic me-2"></i>Standardize All Quizzes to 5 Questions
+                </button>
+                <button id="checkCountsBtn" class="btn btn-outline-info">
+                    <i class="fas fa-refresh me-2"></i>Refresh Quiz Counts
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% elif not stats.get('error') %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="alert alert-success">
+            <i class="fas fa-check-circle me-2"></i>
+            <strong>Excellent!</strong> All quizzes have exactly 5 questions.
+            <button id="checkCountsBtn" class="btn btn-outline-success btn-sm ms-3">
+                <i class="fas fa-refresh me-2"></i>Refresh
+            </button>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Quiz Details Table -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-list me-2"></i>Quiz Details
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if quiz_data %}
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Status</th>
+                                <th>Resource ID</th>
+                                <th>Title</th>
+                                <th>Type</th>
+                                <th>Questions</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for quiz in quiz_data %}
+                            <tr>
+                                <td>
+                                    {% if quiz.status == 'complete' %}
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-check me-1"></i>Complete
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-warning">
+                                            <i class="fas fa-exclamation me-1"></i>Needs Update
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ quiz.resource_id }}</td>
+                                <td>
+                                    <a href="{{ url_for('resource_detail', resource_id=quiz.resource_id) }}" 
+                                       class="text-decoration-none" target="_blank">
+                                        {{ quiz.title[:60] }}{% if quiz.title|length > 60 %}...{% endif %}
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark">{{ quiz.resource_type|title }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge {% if quiz.question_count == 5 %}bg-success{% else %}bg-warning{% endif %}">
+                                        {{ quiz.question_count }}/5
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{{ url_for('resource_quiz', resource_id=quiz.resource_id) }}" 
+                                           class="btn btn-outline-primary btn-sm" target="_blank">
+                                            <i class="fas fa-eye me-1"></i>View Quiz
+                                        </a>
+                                        {% if quiz.status != 'complete' %}
+                                        <button class="btn btn-outline-warning btn-sm standardize-single" 
+                                                data-resource-id="{{ quiz.resource_id }}">
+                                            <i class="fas fa-magic me-1"></i>Fix
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-question-circle fa-3x text-muted mb-3"></i>
+                    <h4>No Quiz Data Found</h4>
+                    <p class="text-muted">There are no quiz questions in the database yet.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center py-4">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <h5 id="loadingText">Processing...</h5>
+                <p class="text-muted mb-0" id="loadingSubtext">This may take a few moments</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Results Modal -->
+<div class="modal fade" id="resultsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="resultsModalTitle">Operation Results</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="resultsModalBody">
+                <!-- Results will be populated here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="location.reload()">
+                    <i class="fas fa-refresh me-2"></i>Refresh Page
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+    const resultsModal = new bootstrap.Modal(document.getElementById('resultsModal'));
+    
+    // Standardize all quizzes
+    document.getElementById('standardizeAllBtn')?.addEventListener('click', function() {
+        document.getElementById('loadingText').textContent = 'Standardizing All Quizzes';
+        document.getElementById('loadingSubtext').textContent = 'Generating 5 questions for each resource...';
+        loadingModal.show();
+        
+        fetch('/api/admin/standardize-quiz-counts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            loadingModal.hide();
+            
+            if (data.success) {
+                let html = `
+                    <div class="alert alert-success">
+                        <h6><i class="fas fa-check-circle me-2"></i>Standardization Complete!</h6>
+                        <p class="mb-0">Updated ${data.total_updated} quizzes, ${data.total_failed} failed</p>
+                    </div>
+                `;
+                
+                if (data.updated_quizzes.length > 0) {
+                    html += '<h6>Successfully Updated:</h6><ul class="list-group mb-3">';
+                    data.updated_quizzes.forEach(quiz => {
+                        html += `<li class="list-group-item d-flex justify-content-between">
+                            <span>Resource ${quiz.resource_id}: ${quiz.title}</span>
+                            <span class="badge bg-success">${quiz.old_count} → ${quiz.new_count}</span>
+                        </li>`;
+                    });
+                    html += '</ul>';
+                }
+                
+                if (data.failed_updates.length > 0) {
+                    html += '<h6>Failed Updates:</h6><ul class="list-group text-danger">';
+                    data.failed_updates.forEach(failure => {
+                        html += `<li class="list-group-item">Resource ${failure.resource_id}: ${failure.error}</li>`;
+                    });
+                    html += '</ul>';
+                }
+                
+                document.getElementById('resultsModalTitle').textContent = 'Standardization Results';
+                document.getElementById('resultsModalBody').innerHTML = html;
+                resultsModal.show();
+            } else {
+                document.getElementById('resultsModalTitle').textContent = 'Error';
+                document.getElementById('resultsModalBody').innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        ${data.error || 'Unknown error occurred'}
+                    </div>
+                `;
+                resultsModal.show();
+            }
+        })
+        .catch(error => {
+            loadingModal.hide();
+            document.getElementById('resultsModalTitle').textContent = 'Error';
+            document.getElementById('resultsModalBody').innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Network error: ${error.message}
+                </div>
+            `;
+            resultsModal.show();
+        });
+    });
+    
+    // Check counts
+    document.getElementById('checkCountsBtn')?.addEventListener('click', function() {
+        location.reload();
+    });
+    
+    // Individual standardization buttons
+    document.querySelectorAll('.standardize-single').forEach(button => {
+        button.addEventListener('click', function() {
+            const resourceId = this.getAttribute('data-resource-id');
+            document.getElementById('loadingText').textContent = `Fixing Resource ${resourceId}`;
+            document.getElementById('loadingSubtext').textContent = 'Generating 5 quiz questions...';
+            loadingModal.show();
+            
+            // For individual resources, we can use the generate-quiz endpoint
+            fetch(`/resources/${resourceId}/generate-quiz`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                loadingModal.hide();
+                
+                if (data.success) {
+                    document.getElementById('resultsModalTitle').textContent = 'Quiz Updated';
+                    document.getElementById('resultsModalBody').innerHTML = `
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle me-2"></i>
+                            Successfully generated ${data.questions_count} questions for Resource ${resourceId}
+                        </div>
+                    `;
+                    resultsModal.show();
+                } else {
+                    document.getElementById('resultsModalTitle').textContent = 'Error';
+                    document.getElementById('resultsModalBody').innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            ${data.message || 'Unknown error occurred'}
+                        </div>
+                    `;
+                    resultsModal.show();
+                }
+            })
+            .catch(error => {
+                loadingModal.hide();
+                document.getElementById('resultsModalTitle').textContent = 'Error';
+                document.getElementById('resultsModalBody').innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Network error: ${error.message}
+                    </div>
+                `;
+                resultsModal.show();
+            });
+        });
+    });
+});
+</script>
+{% endblock %} 

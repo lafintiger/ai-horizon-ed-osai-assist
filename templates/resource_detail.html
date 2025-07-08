@@ -1,0 +1,341 @@
+{% extends "base.html" %}
+
+{% block title %}{{ resource.title }} - AI-Horizon Ed Platform{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Skills</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('browse_resources') }}">Resources</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ resource.title }}</li>
+            </ol>
+        </nav>
+
+        <!-- Resource Header -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h2 class="mb-0">
+                            <i class="fas fa-{{ 'play' if resource.resource_type == 'youtube_video' else 'book' if resource.resource_type == 'documentation' else 'graduation-cap' }} me-2"></i>
+                            {{ resource.title }}
+                        </h2>
+                        <p class="mb-0 mt-2">{{ resource.description or 'No description available' }}</p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <span class="badge bg-warning text-dark fs-6 mb-2">
+                            Quality: {{ "%.0f"|format(resource.quality_score * 100) }}%
+                        </span><br>
+                        <span class="badge bg-info fs-6 mb-2">{{ resource.resource_type|replace('_', ' ')|title }}</span><br>
+                        <span class="badge bg-success fs-6">{{ resource.difficulty_level|title or 'Unknown' }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-link me-2"></i>Resource Link</h6>
+                        <a href="{{ resource.url }}" target="_blank" class="btn btn-primary">
+                            <i class="fas fa-external-link-alt me-2"></i>View Resource
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        {% if resource.estimated_duration_minutes %}
+                        <h6><i class="fas fa-clock me-2"></i>Estimated Duration</h6>
+                        <p>{{ resource.estimated_duration_minutes }} minutes</p>
+                        {% endif %}
+                        
+                        <h6><i class="fas fa-calendar me-2"></i>Added</h6>
+                        <p>{{ resource.created_date.strftime('%B %d, %Y') if resource.created_date else 'Unknown' }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Analysis Section -->
+        {% if resource.ai_analysis_summary %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-robot me-2"></i>AI Analysis Summary
+                </h5>
+            </div>
+            <div class="card-body">
+                <p>{{ resource.ai_analysis_summary }}</p>
+                {% if resource.last_analyzed %}
+                <small class="text-muted">
+                    <i class="fas fa-clock me-1"></i>
+                    Last analyzed: {{ resource.last_analyzed.strftime('%B %d, %Y at %I:%M %p') }}
+                </small>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Action Cards -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-chart-line fa-3x text-info mb-3"></i>
+                        <h5>Resource Analysis</h5>
+                        <p class="text-muted">View comprehensive AI-powered analysis of this resource's content and learning value.</p>
+                        <a href="{{ url_for('resource_analysis', resource_id=resource.id) }}" class="btn btn-info">
+                            <i class="fas fa-analytics me-2"></i>View Analysis
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-question-circle fa-3x text-success mb-3"></i>
+                        <h5>Knowledge Quiz</h5>
+                        <p class="text-muted">Test your understanding with AI-generated questions based on this resource.</p>
+                        <a href="{{ url_for('resource_quiz', resource_id=resource.id) }}" class="btn btn-success">
+                            <i class="fas fa-quiz me-2"></i>Take Quiz
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-project-diagram fa-3x text-warning mb-3"></i>
+                        <h5>Project Ideas</h5>
+                        <p class="text-muted">Explore practical projects to apply the knowledge from this resource.</p>
+                        <a href="{{ url_for('resource_projects', resource_id=resource.id) }}" class="btn btn-warning">
+                            <i class="fas fa-lightbulb me-2"></i>View Projects
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Access Information -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-info-circle me-2"></i>Resource Information
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Type:</strong></td>
+                                <td>{{ resource.resource_type|replace('_', ' ')|title }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Difficulty:</strong></td>
+                                <td>{{ resource.difficulty_level|title or 'Not specified' }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Quality Score:</strong></td>
+                                <td>{{ "%.0f"|format(resource.quality_score * 100) }}%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Status:</strong></td>
+                                <td>
+                                    <span class="badge bg-{{ 'success' if resource.status == 'approved' else 'warning' }}">
+                                        {{ resource.status|title }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% if resource.estimated_duration_minutes %}
+                            <tr>
+                                <td><strong>Duration:</strong></td>
+                                <td>{{ resource.estimated_duration_minutes }} minutes</td>
+                            </tr>
+                            {% endif %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-cogs me-2"></i>Available Features
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group list-group-flush">
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                AI Analysis
+                                <span class="badge bg-{{ 'success' if resource.analysis else 'secondary' }} rounded-pill">
+                                    {{ 'Available' if resource.analysis else 'Pending' }}
+                                </span>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                Quiz Questions
+                                <span class="badge bg-{{ 'success' if quiz_questions else 'secondary' }} rounded-pill">
+                                    {{ quiz_questions|length if quiz_questions else 0 }}
+                                </span>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                Project Ideas
+                                <span class="badge bg-{{ 'success' if assignments else 'secondary' }} rounded-pill">
+                                    {{ assignments|length if assignments else 0 }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Controls -->
+        {% if session.get('admin_logged_in') %}
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card border-warning">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">
+                            <i class="fas fa-user-shield me-2"></i>Admin Controls
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <button class="btn btn-outline-info w-100" onclick="analyzeResource({{ resource.id }})">
+                                    <i class="fas fa-brain me-2"></i>Analyze Resource
+                                </button>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-outline-success w-100" onclick="generateQuiz({{ resource.id }})">
+                                    <i class="fas fa-question me-2"></i>Generate Quiz
+                                </button>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-outline-warning w-100" onclick="generateProjects({{ resource.id }})">
+                                    <i class="fas fa-project-diagram me-2"></i>Generate Projects
+                                </button>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-outline-danger w-100" onclick="editResource({{ resource.id }})">
+                                    <i class="fas fa-edit me-2"></i>Edit Resource
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Processing Modal -->
+<div class="modal fade" id="processingModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Processing...</h5>
+            </div>
+            <div class="modal-body text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3" id="processingMessage">Please wait while we process your request...</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function analyzeResource(resourceId) {
+    const modal = new bootstrap.Modal(document.getElementById('processingModal'));
+    document.getElementById('processingMessage').textContent = 'Analyzing resource with AI...';
+    modal.show();
+    
+    fetch(`/resources/${resourceId}/analyze`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        modal.hide();
+        if (data.success) {
+            alert('Resource analysis completed successfully!');
+            location.reload();
+        } else {
+            alert('Error: ' + data.error);
+        }
+    })
+    .catch(error => {
+        modal.hide();
+        console.error('Error:', error);
+        alert('Error analyzing resource');
+    });
+}
+
+function generateQuiz(resourceId) {
+    const modal = new bootstrap.Modal(document.getElementById('processingModal'));
+    document.getElementById('processingMessage').textContent = 'Generating quiz questions with AI...';
+    modal.show();
+    
+    fetch(`/resources/${resourceId}/generate-quiz`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        modal.hide();
+        if (data.success) {
+            alert(`Quiz generation completed! Generated ${data.questions_created} questions.`);
+            location.reload();
+        } else {
+            alert('Error: ' + data.error);
+        }
+    })
+    .catch(error => {
+        modal.hide();
+        console.error('Error:', error);
+        alert('Error generating quiz');
+    });
+}
+
+function generateProjects(resourceId) {
+    const modal = new bootstrap.Modal(document.getElementById('processingModal'));
+    document.getElementById('processingMessage').textContent = 'Generating project ideas with AI...';
+    modal.show();
+    
+    fetch(`/resources/${resourceId}/generate-projects`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        modal.hide();
+        if (data.success) {
+            alert(`Project generation completed! Generated ${data.projects_created} project ideas.`);
+            location.reload();
+        } else {
+            alert('Error: ' + data.error);
+        }
+    })
+    .catch(error => {
+        modal.hide();
+        console.error('Error:', error);
+        alert('Error generating projects');
+    });
+}
+
+function editResource(resourceId) {
+    alert('Resource editing interface coming soon!');
+}
+</script>
+{% endblock %} 

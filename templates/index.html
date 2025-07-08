@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+{% block title %}Skills Overview - AI-Horizon Ed Platform{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="jumbotron bg-gradient-primary text-white text-center py-5 mb-5 rounded">
+    <div class="container">
+        <h1 class="display-4">
+            <i class="fas fa-brain me-3"></i>AI-Horizon Ed Platform
+        </h1>
+        <p class="lead">
+            Discover and master emerging AI-related skills for workforce transformation
+        </p>
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-8">
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <div class="bg-white bg-opacity-10 p-3 rounded">
+                            <h3 class="mb-0">{{ skills|length }}</h3>
+                            <small>Active Skills</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="bg-white bg-opacity-10 p-3 rounded">
+                            <h3 class="mb-0"><i class="fas fa-star"></i></h3>
+                            <small>AI-Powered</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="bg-white bg-opacity-10 p-3 rounded">
+                            <h3 class="mb-0"><i class="fas fa-rocket"></i></h3>
+                            <small>Career Ready</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search and Filter Section -->
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-search"></i></span>
+            <input type="text" class="form-control" id="skillSearch" placeholder="Search skills by name or description...">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <select class="form-select" id="categoryFilter">
+            <option value="">All Categories</option>
+            <option value="Cybersecurity">Cybersecurity</option>
+            <option value="AI/ML">AI/ML</option>
+            <option value="Data Science">Data Science</option>
+            <option value="Cloud Computing">Cloud Computing</option>
+            <option value="DevOps">DevOps</option>
+        </select>
+    </div>
+</div>
+
+<!-- Skills Grid -->
+<div class="row" id="skillsGrid">
+    {% if skills %}
+        {% for skill in skills %}
+        <div class="col-md-6 col-lg-4 mb-4 skill-card" 
+             data-category="{{ skill.category or '' }}" 
+             data-search="{{ skill.skill_name|lower }} {{ skill.description|lower if skill.description else '' }}">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">{{ skill.category or 'General' }}</h6>
+                    <span class="badge bg-warning text-dark">
+                        {{ "%.1f"|format(skill.urgency_score) }}
+                    </span>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ skill.skill_name }}</h5>
+                    <p class="card-text">
+                        {{ skill.description[:150] }}
+                        {% if skill.description and skill.description|length > 150 %}...{% endif %}
+                    </p>
+                    
+                    {% if skill.market_demand_evidence %}
+                    <div class="alert alert-info py-2">
+                        <small>
+                            <i class="fas fa-chart-line me-1"></i>
+                            {{ skill.market_demand_evidence[:80] }}
+                            {% if skill.market_demand_evidence|length > 80 %}...{% endif %}
+                        </small>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="card-footer bg-transparent">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <i class="fas fa-clock me-1"></i>
+                            {{ skill.last_updated.strftime('%b %d, %Y') if skill.last_updated else 'New' }}
+                        </small>
+                        <a href="{{ url_for('skill_detail', skill_id=skill.id) }}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-arrow-right me-1"></i>Learn More
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h4>No Skills Found</h4>
+                    <p class="text-muted">
+                        No emerging skills are currently available. Check back later or contact an administrator.
+                    </p>
+                    {% if session.get('admin_logged_in') %}
+                        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>Add Skills
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<!-- No Results Message -->
+<div class="row d-none" id="noResults">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                <h4>No Skills Match Your Search</h4>
+                <p class="text-muted">
+                    Try adjusting your search terms or clearing the filters.
+                </p>
+                <button class="btn btn-secondary" onclick="clearFilters()">
+                    <i class="fas fa-times me-2"></i>Clear Filters
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- About Section -->
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card bg-light">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-info-circle me-2"></i>About AI-Horizon Ed Platform
+                </h5>
+                <p class="card-text">
+                    The AI-Horizon Ed Platform is designed to help students, faculty, and professionals discover and master 
+                    emerging AI-related skills critical for workforce transformation. Our platform leverages AI-powered 
+                    content discovery and analysis to provide curated learning resources, structured learning paths, and 
+                    competency validation tools.
+                </p>
+                <div class="row mt-3">
+                    <div class="col-md-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-robot text-primary me-2"></i>
+                            <span>AI-Powered Discovery</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-route text-success me-2"></i>
+                            <span>Structured Learning Paths</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle text-info me-2"></i>
+                            <span>Competency Validation</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-graduation-cap text-warning me-2"></i>
+                            <span>NSF-Funded Initiative</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('skillSearch');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const skillCards = document.querySelectorAll('.skill-card');
+    const noResults = document.getElementById('noResults');
+    const skillsGrid = document.getElementById('skillsGrid');
+
+    function filterSkills() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const selectedCategory = categoryFilter.value;
+        let visibleCount = 0;
+
+        skillCards.forEach(card => {
+            const searchText = card.getAttribute('data-search');
+            const cardCategory = card.getAttribute('data-category');
+            
+            const matchesSearch = searchText.includes(searchTerm);
+            const matchesCategory = !selectedCategory || cardCategory === selectedCategory;
+            
+            if (matchesSearch && matchesCategory) {
+                card.style.display = 'block';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        // Show/hide no results message
+        if (visibleCount === 0) {
+            noResults.classList.remove('d-none');
+        } else {
+            noResults.classList.add('d-none');
+        }
+    }
+
+    searchInput.addEventListener('input', filterSkills);
+    categoryFilter.addEventListener('change', filterSkills);
+    
+    // Global function for clear filters button
+    window.clearFilters = function() {
+        searchInput.value = '';
+        categoryFilter.value = '';
+        filterSkills();
+    };
+});
+</script>
+{% endblock %} 

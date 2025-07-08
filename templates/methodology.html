@@ -1,0 +1,868 @@
+{% extends "base.html" %}
+
+{% block title %}AI Methodology & Decision Framework - AI-Horizon Ed{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="text-center py-4 bg-gradient-primary text-white rounded">
+                <h1 class="display-5">
+                    <i class="fas fa-cog me-3"></i>
+                    AI Methodology & Decision Framework
+                </h1>
+                <p class="lead mb-0">
+                    Transparent AI-powered educational resource discovery and analysis
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skills Discovery Methodology -->
+    <div id="skills-discovery" class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+                <i class="fas fa-search me-2"></i>
+                1. Skills Discovery Methodology
+            </h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <h5>Algorithmic Approach</h5>
+                    <p>Our skills discovery uses a multi-stage AI pipeline combining real-time web intelligence with structured analysis.</p>
+                    
+                    <h6>Stage 1: Query Generation</h6>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                <strong><i class="fas fa-info-circle me-2"></i>System Prompt:</strong>
+                            </div>
+                            <pre class="bg-light p-3 rounded small"><code>You are an expert workforce analyst specializing in AI 
+and cybersecurity skills trends. Provide detailed, 
+actionable insights about emerging skills with specific 
+market evidence.</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="alert alert-success">
+                                <strong><i class="fas fa-question-circle me-2"></i>User Query Template:</strong>
+                            </div>
+                            <pre class="bg-light p-3 rounded small"><code>What are the most critical emerging skills needed in 
+{domain} for {timeframe}? Focus on:
+1. AI-enhanced cybersecurity roles
+2. New technologies requiring specialized knowledge  
+3. Skills with high market demand and urgency
+4. Roles that combine AI with traditional cybersecurity</code></pre>
+                        </div>
+                    </div>
+                    
+                    <h6>Stage 2: Response Processing</h6>
+                    <p>Perplexity API responses are parsed using OpenAI GPT-4 with structured extraction:</p>
+                    <ul>
+                        <li><strong>Skill Name:</strong> Concise, searchable identifier</li>
+                        <li><strong>Description:</strong> 1-2 sentence explanation</li>
+                        <li><strong>Category:</strong> AI/ML, Cybersecurity, DevOps, etc.</li>
+                        <li><strong>Urgency Score:</strong> 1-10 numeric assessment</li>
+                        <li><strong>Market Evidence:</strong> Specific supporting data</li>
+                    </ul>
+                    
+                    <h6>Stage 3: Validation & Scoring</h6>
+                    <p>Each skill undergoes validation using these criteria:</p>
+                    <ul>
+                        <li><strong>Market Demand Evidence:</strong> Job postings, salary trends, industry reports</li>
+                        <li><strong>Skill Novelty:</strong> How new/emerging the skill is (0-1 scale)</li>
+                        <li><strong>Technical Complexity:</strong> Learning difficulty assessment (1-10)</li>
+                        <li><strong>Industry Adoption:</strong> Rate of enterprise adoption</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <div class="bg-light p-3 rounded">
+                        <h6><i class="fas fa-formula me-1"></i> Urgency Score Formula:</h6>
+                        <pre class="small">Urgency = 
+  (Market_Demand × 0.4) + 
+  (Skill_Novelty × 0.3) + 
+  (Industry_Adoption × 0.2) + 
+  (Technical_Impact × 0.1)</pre>
+                        
+                        <h6><i class="fas fa-chart-bar me-1"></i> Scoring Criteria:</h6>
+                        <ul class="list-unstyled small">
+                            <li><strong>9-10:</strong> Critical/Urgent</li>
+                            <li><strong>7-8:</strong> High Priority</li>
+                            <li><strong>5-6:</strong> Moderate</li>
+                            <li><strong>1-4:</strong> Low Priority</li>
+                        </ul>
+                        
+                        <h6><i class="fas fa-shield-alt me-1"></i> Quality Controls:</h6>
+                        <ul class="list-unstyled small">
+                            <li>• Duplicate detection</li>
+                            <li>• Evidence validation</li>
+                            <li>• Bias detection</li>
+                            <li>• Expert review flags</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resource Discovery Methodology -->
+    <div id="resource-discovery" class="card mb-4">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0">
+                <i class="fas fa-book me-2"></i>
+                2. Resource Discovery Methodology
+            </h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <h5>Discovery Algorithm</h5>
+                    <p>For each skill, we execute a systematic resource discovery process using multi-source intelligence.</p>
+                    
+                    <h6>Query Strategy</h6>
+                    <div class="alert alert-warning">
+                        <strong><i class="fas fa-search me-2"></i>Resource Discovery Template:</strong>
+                    </div>
+                    <pre class="bg-light p-3 rounded small"><code>Find the best educational resources for learning 
+"{skill_name}" focusing on {resource_type}.
+
+Requirements:
+- Current and relevant (2023-2024)
+- High quality and credible sources
+- Practical and actionable content
+- Suitable for professional development
+
+For each resource, provide:
+- Title, Description, URL
+- Difficulty level (Beginner/Intermediate/Advanced)
+- Estimated duration
+- Why it's valuable</code></pre>
+                    
+                    <h6>Source Prioritization</h6>
+                    <p>Resources are discovered from sources ranked by credibility:</p>
+                    <ul>
+                        <li><strong>Tier 1 (Weight: 1.0):</strong> Government (NIST, CISA), Standards (OWASP, IEEE)</li>
+                        <li><strong>Tier 2 (Weight: 0.8):</strong> Universities (MIT, Stanford), Major Tech (Microsoft, Google)</li>
+                        <li><strong>Tier 3 (Weight: 0.6):</strong> Professional Platforms (Coursera, edX, LinkedIn Learning)</li>
+                        <li><strong>Tier 4 (Weight: 0.4):</strong> Community Platforms (YouTube, Medium, GitHub)</li>
+                    </ul>
+                    
+                    <h6>Content Validation</h6>
+                    <p>Each discovered resource undergoes validation:</p>
+                    <ul>
+                        <li><strong>URL Accessibility:</strong> Active link verification</li>
+                        <li><strong>Content Currency:</strong> Publication/update date analysis</li>
+                        <li><strong>Relevance Check:</strong> Skill alignment verification</li>
+                        <li><strong>Metadata Extraction:</strong> Title, description, type, duration</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <div class="bg-light p-3 rounded">
+                        <h6><i class="fas fa-filter me-1"></i> Filter Criteria:</h6>
+                        <ul class="list-unstyled small">
+                            <li>• <strong>Recency:</strong> Published 2022+</li>
+                            <li>• <strong>Language:</strong> English content</li>
+                            <li>• <strong>Format:</strong> Video, text, interactive</li>
+                            <li>• <strong>Access:</strong> Free or low-cost preferred</li>
+                        </ul>
+                        
+                        <h6><i class="fas fa-tags me-1"></i> Resource Types:</h6>
+                        <ul class="list-unstyled small">
+                            <li>• <strong>youtube_video:</strong> Video tutorials</li>
+                            <li>• <strong>online_course:</strong> Structured courses</li>
+                            <li>• <strong>documentation:</strong> Official docs</li>
+                            <li>• <strong>guide:</strong> How-to guides</li>
+                            <li>• <strong>tool:</strong> Software tools</li>
+                            <li>• <strong>article:</strong> Technical articles</li>
+                        </ul>
+                        
+                        <h6><i class="fas fa-globe me-1"></i> Platform Coverage:</h6>
+                        <ul class="list-unstyled small">
+                            <li>• Educational (Coursera, edX, Udemy)</li>
+                            <li>• Technical (GitHub, Stack Overflow)</li>
+                            <li>• Video (YouTube, Vimeo)</li>
+                            <li>• Official (Vendor documentation)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Analysis Framework -->
+    <div id="content-analysis" class="card mb-4">
+        <div class="card-header bg-info text-white">
+            <h4 class="mb-0">
+                <i class="fas fa-brain me-2"></i>
+                3. Content Analysis Framework
+            </h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <h5>Multi-Dimensional Analysis</h5>
+                    <p>Each resource undergoes comprehensive AI analysis to extract maximum learning value.</p>
+                    
+                    <h6>Analysis Dimensions</h6>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Dimension</th>
+                                    <th>Purpose</th>
+                                    <th>AI Model</th>
+                                    <th>Output</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Content Summary</strong></td>
+                                    <td>Core topic extraction</td>
+                                    <td>GPT-4</td>
+                                    <td>2-3 sentence summary</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Key Concepts</strong></td>
+                                    <td>Learning objectives</td>
+                                    <td>GPT-4</td>
+                                    <td>JSON array of concepts</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Prerequisites</strong></td>
+                                    <td>Required knowledge</td>
+                                    <td>GPT-4</td>
+                                    <td>Structured requirements</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Practical Applications</strong></td>
+                                    <td>Real-world usage</td>
+                                    <td>GPT-4</td>
+                                    <td>Use case scenarios</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Best Practices</strong></td>
+                                    <td>Industry standards</td>
+                                    <td>Claude</td>
+                                    <td>Recommendation list</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Common Pitfalls</strong></td>
+                                    <td>Error prevention</td>
+                                    <td>Claude</td>
+                                    <td>Warning list</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h6>Specialized Processing</h6>
+                    <ul>
+                        <li><strong>YouTube Videos:</strong> Title/description analysis, transcription where available</li>
+                        <li><strong>Documentation:</strong> Structure analysis, technical depth assessment</li>
+                        <li><strong>Courses:</strong> Curriculum mapping, learning path analysis</li>
+                        <li><strong>Tools:</strong> Feature analysis, use case identification</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <div class="bg-light p-3 rounded">
+                        <h6><i class="fas fa-brain me-1"></i> AI Prompt Engineering:</h6>
+                        <pre class="small">SYSTEM_PROMPT = """
+You are an expert educational 
+content analyzer specializing in 
+AI and cybersecurity topics. 
+Provide comprehensive, structured 
+analysis focusing on learning 
+value and practical application.
+"""</pre>
+                        
+                        <h6><i class="fas fa-chart-line me-1"></i> Quality Metrics:</h6>
+                        <ul class="list-unstyled small">
+                            <li><strong>Complexity Score:</strong> 0-10 scale</li>
+                            <li><strong>Practical Score:</strong> 0-10 scale</li>
+                            <li><strong>Confidence:</strong> 0-1 scale</li>
+                            <li><strong>Completeness:</strong> % of fields filled</li>
+                        </ul>
+                        
+                        <h6><i class="fas fa-check-circle me-1"></i> Validation Steps:</h6>
+                        <ul class="list-unstyled small">
+                            <li>• JSON structure validation</li>
+                            <li>• Content relevance check</li>
+                            <li>• Duplicate detection</li>
+                            <li>• Cross-model consistency</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quality Assessment Algorithm -->
+    <div id="quality-assessment" class="card mb-4">
+        <div class="card-header bg-warning text-dark">
+            <h4 class="mb-0">
+                <i class="fas fa-star me-2"></i>
+                4. Quality Assessment Algorithm
+            </h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <h5>Multi-Factor Quality Scoring</h5>
+                    <p>Resources are evaluated using a weighted multi-factor algorithm designed to identify the highest-quality learning materials.</p>
+                    
+                    <h6>Core Algorithm</h6>
+                    <pre class="bg-light p-3 rounded"><code>def calculate_quality_score(resource):
+    factors = {
+        'content_relevance': assess_content_relevance(resource),
+        'technical_depth': assess_technical_depth(resource),
+        'source_credibility': assess_source_credibility(resource),
+        'content_freshness': assess_content_freshness(resource),
+        'accessibility': assess_accessibility(resource),
+        'production_quality': assess_production_quality(resource),
+        'engagement_potential': assess_engagement_potential(resource)
+    }
+    
+    weights = {
+        'content_relevance': 0.25,    # Most important
+        'technical_depth': 0.20,      # Technical rigor
+        'source_credibility': 0.15,   # Trust factor
+        'content_freshness': 0.15,    # Currency
+        'accessibility': 0.10,        # Ease of access
+        'production_quality': 0.10,   # Presentation
+        'engagement_potential': 0.05  # Engagement
+    }
+    
+    score = sum(factors[f] * weights[f] for f in factors)
+    return max(0.1, min(1.0, score))  # Clamp to 0.1-1.0</code></pre>
+                    
+                    <h6>Factor Assessment Details</h6>
+                    <div class="accordion" id="qualityFactors">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#contentRelevance">
+                                    Content Relevance (25% weight)
+                                </button>
+                            </h2>
+                            <div id="contentRelevance" class="accordion-collapse collapse" data-bs-parent="#qualityFactors">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li><strong>AI + Cybersecurity:</strong> 0.95 (highest relevance)</li>
+                                        <li><strong>AI or Cybersecurity:</strong> 0.7 (good relevance)</li>
+                                        <li><strong>Related topics:</strong> 0.5 (moderate relevance)</li>
+                                        <li><strong>Unrelated:</strong> 0.3 (low relevance)</li>
+                                    </ul>
+                                    <p><strong>Keywords tracked:</strong> AI, machine learning, cybersecurity, hacking, penetration testing, zero trust, etc.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#technicalDepth">
+                                    Technical Depth (20% weight)
+                                </button>
+                            </h2>
+                            <div id="technicalDepth" class="accordion-collapse collapse" data-bs-parent="#qualityFactors">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li><strong>Documentation:</strong> 0.8 (comprehensive)</li>
+                                        <li><strong>Courses:</strong> 0.7 (structured)</li>
+                                        <li><strong>Guides:</strong> 0.6 (practical)</li>
+                                        <li><strong>YouTube:</strong> 0.4 (variable)</li>
+                                    </ul>
+                                    <p><strong>Adjustments:</strong> +0.2 for "advanced/expert", -0.1 for "beginner/basic"</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sourceCredibility">
+                                    Source Credibility (15% weight)
+                                </button>
+                            </h2>
+                            <div id="sourceCredibility" class="accordion-collapse collapse" data-bs-parent="#qualityFactors">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li><strong>Tier 1:</strong> 0.9 (NIST, OWASP, CISA, universities)</li>
+                                        <li><strong>Tier 2:</strong> 0.6 (YouTube, Udemy, Medium)</li>
+                                        <li><strong>Unknown:</strong> 0.5 (default)</li>
+                                    </ul>
+                                    <p><strong>Authority indicators:</strong> Official, certified, government sources receive bonuses</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="bg-light p-3 rounded">
+                        <h6><i class="fas fa-calculator me-1"></i> Quality Ranges:</h6>
+                        <ul class="list-unstyled">
+                            <li><span class="badge bg-success">🏆 0.80-1.00</span> Excellent</li>
+                            <li><span class="badge bg-primary">⭐ 0.70-0.79</span> High</li>
+                            <li><span class="badge bg-info">👍 0.60-0.69</span> Good</li>
+                            <li><span class="badge bg-warning">📚 0.10-0.59</span> Moderate</li>
+                        </ul>
+                        
+                        <h6><i class="fas fa-chart-pie me-1"></i> Current Distribution:</h6>
+                        <ul class="list-unstyled small">
+                            <li>• <strong>Excellent:</strong> 5 resources (5.5%)</li>
+                            <li>• <strong>High:</strong> 75 resources (82.4%)</li>
+                            <li>• <strong>Good:</strong> 10 resources (11.0%)</li>
+                            <li>• <strong>Moderate:</strong> 1 resource (1.1%)</li>
+                        </ul>
+                        
+                        <h6><i class="fas fa-sync me-1"></i> Update Frequency:</h6>
+                        <ul class="list-unstyled small">
+                            <li>• <strong>Real-time:</strong> New resources</li>
+                            <li>• <strong>Monthly:</strong> Re-assessment</li>
+                            <li>• <strong>Quarterly:</strong> Algorithm updates</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Generation Method -->
+    <div id="quiz-generation" class="card mb-4">
+        <div class="card-header bg-secondary text-white">
+            <h4 class="mb-0">
+                <i class="fas fa-question-circle me-2"></i>
+                5. Quiz Generation Method
+            </h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <h5>AI-Powered Quiz Generation</h5>
+                    <p>Interactive quizzes are generated using AI analysis of resource content to reinforce key learning objectives.</p>
+                    
+                    <h6>Generation Process</h6>
+                    <ol>
+                        <li><strong>Content Analysis:</strong> Extract key concepts from resource analysis</li>
+                        <li><strong>Question Design:</strong> Create multiple-choice questions targeting different cognitive levels</li>
+                        <li><strong>Distractor Generation:</strong> Create plausible incorrect answers</li>
+                        <li><strong>Explanation Creation:</strong> Provide detailed explanations for all answers</li>
+                        <li><strong>Difficulty Balancing:</strong> Ensure appropriate difficulty distribution</li>
+                    </ol>
+                    
+                    <h6>Question Types & Cognitive Levels</h6>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Cognitive Level</th>
+                                    <th>Question Type</th>
+                                    <th>Example</th>
+                                    <th>Distribution</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Remember</strong></td>
+                                    <td>Definition/Fact</td>
+                                    <td>"What is Zero Trust?"</td>
+                                    <td>20%</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Understand</strong></td>
+                                    <td>Explanation</td>
+                                    <td>"Why is Zero Trust important?"</td>
+                                    <td>30%</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Apply</strong></td>
+                                    <td>Scenario</td>
+                                    <td>"How would you implement Zero Trust?"</td>
+                                    <td>30%</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Analyze</strong></td>
+                                    <td>Problem-solving</td>
+                                    <td>"What are the risks of this approach?"</td>
+                                    <td>20%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h6>Quality Assurance</h6>
+                    <ul>
+                        <li><strong>Clarity Check:</strong> Questions are clear and unambiguous</li>
+                        <li><strong>Distractor Quality:</strong> Incorrect answers are plausible but clearly wrong</li>
+                        <li><strong>Explanation Quality:</strong> Detailed explanations for why answers are correct/incorrect</li>
+                        <li><strong>Difficulty Balance:</strong> Mix of easy, medium, and challenging questions</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <div class="bg-light p-3 rounded">
+                        <h6><i class="fas fa-cogs me-1"></i> Generation Parameters:</h6>
+                        <ul class="list-unstyled small">
+                            <li><strong>Questions per resource:</strong> 5</li>
+                            <li><strong>Options per question:</strong> 4 (A, B, C, D)</li>
+                            <li><strong>Explanation length:</strong> 100-200 words</li>
+                            <li><strong>Temperature:</strong> 0.3 (consistent)</li>
+                        </ul>
+                        
+                        <h6><i class="fas fa-brain me-1"></i> AI Prompt Strategy:</h6>
+                        <pre class="small">SYSTEM_PROMPT = """
+You are an expert educational 
+assessment designer. Create 
+multiple-choice questions that 
+test real understanding and 
+practical application of concepts.
+"""</pre>
+                        
+                        <h6><i class="fas fa-check-square me-1"></i> Validation Criteria:</h6>
+                        <ul class="list-unstyled small">
+                            <li>• Question clarity (1-5 scale)</li>
+                            <li>• Answer correctness validation</li>
+                            <li>• Explanation completeness</li>
+                            <li>• Distractor plausibility</li>
+                        </ul>
+                        
+                        <h6><i class="fas fa-chart-bar me-1"></i> Success Metrics:</h6>
+                        <ul class="list-unstyled small">
+                            <li>• <strong>35</strong> quizzes generated</li>
+                            <li>• <strong>175</strong> total questions</li>
+                            <li>• <strong>98%</strong> pass validation</li>
+                            <li>• <strong>4.2/5</strong> avg. quality score</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Generation Framework -->
+    <div id="project-generation" class="card mb-4">
+        <div class="card-header bg-dark text-white">
+            <h4 class="mb-0">
+                <i class="fas fa-project-diagram me-2"></i>
+                6. Project Generation Framework
+            </h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <h5>Practical Project Creation</h5>
+                    <p>AI generates hands-on project ideas that bridge theoretical knowledge with practical application.</p>
+                    
+                    <h6>Project Design Framework</h6>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Component</th>
+                                    <th>Purpose</th>
+                                    <th>AI Generation Method</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Title</strong></td>
+                                    <td>Clear project identifier</td>
+                                    <td>Action-oriented naming</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Description</strong></td>
+                                    <td>Project overview</td>
+                                    <td>Problem-solution narrative</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Objectives</strong></td>
+                                    <td>Learning goals</td>
+                                    <td>SMART criteria application</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Deliverables</strong></td>
+                                    <td>Concrete outputs</td>
+                                    <td>Industry-standard artifacts</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Success Criteria</strong></td>
+                                    <td>Assessment metrics</td>
+                                    <td>Measurable outcomes</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h6>Project Categories</h6>
+                    <ul>
+                        <li><strong>AI & Cybersecurity:</strong> SOC automation, threat detection, security assistants</li>
+                        <li><strong>Implementation:</strong> Tool deployment, configuration, testing</li>
+                        <li><strong>Analysis:</strong> Risk assessment, compliance evaluation, gap analysis</li>
+                        <li><strong>Development:</strong> Custom tools, scripts, applications</li>
+                        <li><strong>Research:</strong> Technology evaluation, proof of concept</li>
+                    </ul>
+                    
+                    <h6>Real-World Context Integration</h6>
+                    <ul>
+                        <li><strong>Enterprise Scenarios:</strong> Corporate environment challenges</li>
+                        <li><strong>Compliance Requirements:</strong> Industry standards and regulations</li>
+                        <li><strong>Budget Constraints:</strong> Resource-limited implementations</li>
+                        <li><strong>Scalability Considerations:</strong> Growth-oriented designs</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <div class="bg-light p-3 rounded">
+                        <h6><i class="fas fa-layer-group me-1"></i> Difficulty Levels:</h6>
+                        <ul class="list-unstyled small">
+                            <li><strong>Beginner:</strong> 2-4 hours, basic tools</li>
+                            <li><strong>Intermediate:</strong> 4-8 hours, moderate complexity</li>
+                            <li><strong>Advanced:</strong> 8+ hours, enterprise-level</li>
+                        </ul>
+                        
+                        <h6><i class="fas fa-tools me-1"></i> Resource Categories:</h6>
+                        <ul class="list-unstyled small">
+                            <li><strong>YouTube:</strong> Implementation demos</li>
+                            <li><strong>Courses:</strong> Capstone projects</li>
+                            <li><strong>Documentation:</strong> Configuration labs</li>
+                            <li><strong>Tools:</strong> Usage scenarios</li>
+                        </ul>
+                        
+                        <h6><i class="fas fa-industry me-1"></i> Industry Context:</h6>
+                        <ul class="list-unstyled small">
+                            <li>• Financial Services</li>
+                            <li>• Healthcare</li>
+                            <li>• Government</li>
+                            <li>• Technology</li>
+                            <li>• Manufacturing</li>
+                        </ul>
+                        
+                        <h6><i class="fas fa-chart-line me-1"></i> Current Results:</h6>
+                        <ul class="list-unstyled small">
+                            <li>• <strong>70</strong> projects generated</li>
+                            <li>• <strong>37</strong> resources covered</li>
+                            <li>• <strong>3</strong> difficulty levels</li>
+                            <li>• <strong>5</strong> industry contexts</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Curation & Presentation Logic -->
+    <div id="curation-presentation" class="card mb-4">
+        <div class="card-header bg-info text-white">
+            <h4 class="mb-0">
+                <i class="fas fa-list me-2"></i>
+                7. Curation & Presentation Logic
+            </h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <h5>Intelligent Content Curation</h5>
+                    <p>Final resources are curated and presented using multi-factor ranking algorithms to optimize learning outcomes.</p>
+                    
+                    <h6>Primary Ranking Algorithm</h6>
+                    <pre class="bg-light p-3 rounded"><code>def rank_resources(resources, user_context=None):
+    """
+    Rank resources using multi-factor scoring
+    """
+    for resource in resources:
+        # Base quality score (0.1 - 1.0)
+        base_score = resource.quality_score
+        
+        # Recency bonus (up to +0.1)
+        recency_bonus = calculate_recency_bonus(resource)
+        
+        # Completeness bonus (up to +0.05)
+        completeness_bonus = calculate_completeness_bonus(resource)
+        
+        # User preference adjustment (contextual)
+        user_adjustment = calculate_user_preference(resource, user_context)
+        
+        # Final ranking score
+        resource.ranking_score = base_score + recency_bonus + completeness_bonus + user_adjustment
+    
+    return sorted(resources, key=lambda r: r.ranking_score, reverse=True)</code></pre>
+                    
+                    <h6>Presentation Enhancements</h6>
+                    <ul>
+                        <li><strong>Visual Quality Indicators:</strong> Color-coded badges showing quality levels</li>
+                        <li><strong>AI Analysis Previews:</strong> Key insights displayed prominently</li>
+                        <li><strong>Interactive Elements:</strong> Quick access to quizzes and projects</li>
+                        <li><strong>Progress Tracking:</strong> Learning path completion status</li>
+                        <li><strong>Personalized Recommendations:</strong> Skill-based suggestions</li>
+                    </ul>
+                    
+                    <h6>User Experience Optimization</h6>
+                    <ul>
+                        <li><strong>Progressive Disclosure:</strong> Show relevant information without overwhelm</li>
+                        <li><strong>Mobile Responsiveness:</strong> Optimized for all device sizes</li>
+                        <li><strong>Accessibility:</strong> Screen reader compatible, keyboard navigation</li>
+                        <li><strong>Performance:</strong> Lazy loading, efficient queries</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <div class="bg-light p-3 rounded">
+                        <h6><i class="fas fa-sort-amount-down me-1"></i> Ranking Factors:</h6>
+                        <ul class="list-unstyled small">
+                            <li><strong>Quality Score:</strong> 70% weight</li>
+                            <li><strong>Recency:</strong> 15% weight</li>
+                            <li><strong>Completeness:</strong> 10% weight</li>
+                            <li><strong>User Preference:</strong> 5% weight</li>
+                        </ul>
+                        
+                        <h6><i class="fas fa-eye me-1"></i> Visual Design:</h6>
+                        <ul class="list-unstyled small">
+                            <li>• Quality badges with icons</li>
+                            <li>• Consistent card layouts</li>
+                            <li>• Responsive grid system</li>
+                            <li>• Accessible color schemes</li>
+                        </ul>
+                        
+                        <h6><i class="fas fa-filter me-1"></i> Filter Options:</h6>
+                        <ul class="list-unstyled small">
+                            <li>• Resource type</li>
+                            <li>• Skill category</li>
+                            <li>• Difficulty level</li>
+                            <li>• Quality rating</li>
+                        </ul>
+                        
+                        <h6><i class="fas fa-chart-pie me-1"></i> Platform Stats:</h6>
+                        <ul class="list-unstyled small">
+                            <li>• <strong>91</strong> total resources</li>
+                            <li>• <strong>100%</strong> quality assessed</li>
+                            <li>• <strong>40%</strong> with AI analysis</li>
+                            <li>• <strong>38%</strong> with quizzes</li>
+                            <li>• <strong>77%</strong> with projects</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transparency & Reproducibility -->
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="mb-0">
+                <i class="fas fa-lock-open me-2"></i>
+                Transparency & Reproducibility
+            </h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Open Methodology</h5>
+                    <p>All algorithms, prompts, and decision criteria are documented for academic reproducibility.</p>
+                    
+                    <h6>Documentation Standards</h6>
+                    <ul>
+                        <li><strong>Complete Prompt Sets:</strong> All AI prompts version-controlled</li>
+                        <li><strong>Algorithm Specifications:</strong> Detailed pseudocode and formulas</li>
+                        <li><strong>Data Schemas:</strong> Complete database structure documentation</li>
+                        <li><strong>Decision Trees:</strong> Logic flow for all automated decisions</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5>Bias Detection & Mitigation</h5>
+                    <p>Systematic approaches to identify and reduce algorithmic bias.</p>
+                    
+                    <h6>Bias Detection Methods</h6>
+                    <ul>
+                        <li><strong>Source Diversity:</strong> Multiple AI models and data sources</li>
+                        <li><strong>Quality Distribution:</strong> Regular scoring distribution analysis</li>
+                        <li><strong>Content Representation:</strong> Balanced skill and topic coverage</li>
+                        <li><strong>Accessibility Review:</strong> Barrier identification and removal</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style>
+.accordion-button:not(.collapsed) {
+    background-color: #f8f9fa;
+}
+
+.card-header {
+    border-radius: 0.5rem 0.5rem 0 0 !important;
+}
+
+pre code {
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.badge {
+    font-size: 0.75rem;
+}
+
+.bg-light {
+    background-color: #f8f9fa !important;
+}
+
+.small {
+    font-size: 0.875rem;
+}
+
+.list-unstyled li {
+    margin-bottom: 0.25rem;
+}
+
+.accordion-body {
+    background-color: #fefefe;
+}
+
+/* Smooth scrolling for anchor links */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Highlight targeted sections */
+.card:target {
+    box-shadow: 0 0 20px rgba(0, 123, 255, 0.3);
+    border-color: #007bff;
+}
+</style>
+
+<script>
+// Add smooth scrolling to all anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+
+// Highlight the current section being viewed
+window.addEventListener('scroll', function() {
+    const sections = document.querySelectorAll('[id]');
+    const scrollPos = window.scrollY + 100;
+    
+    sections.forEach(section => {
+        if (section.offsetTop <= scrollPos && section.offsetTop + section.offsetHeight > scrollPos) {
+            // Remove previous highlights
+            document.querySelectorAll('.card').forEach(card => {
+                card.classList.remove('border-primary');
+            });
+            
+            // Add highlight to current section
+            if (section.classList.contains('card')) {
+                section.classList.add('border-primary');
+            }
+        }
+    });
+});
+</script>
+{% endblock %} 

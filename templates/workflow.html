@@ -1,0 +1,456 @@
+{% extends "base.html" %}
+
+{% block title %}AI-Powered Educational Workflow - AI-Horizon Ed{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h2">
+                    <i class="fas fa-project-diagram me-2"></i>
+                    AI-Powered Educational Workflow
+                </h1>
+                <div>
+                    <a href="{{ url_for('methodology') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-cog me-1"></i>View Methodology
+                    </a>
+                </div>
+            </div>
+            
+            <div class="alert alert-info mb-4">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>NSF Grant Project:</strong> This workflow demonstrates our AI-powered approach to discovering, analyzing, and curating educational resources for emerging cybersecurity and AI skills.
+            </div>
+        </div>
+    </div>
+
+    <!-- Workflow Steps -->
+    <div class="row">
+        <div class="col-12">
+            
+            <!-- Step 1: Skills Discovery -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-search me-2"></i>
+                        Step 1: AI-Powered Skills Discovery
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5>Process Overview</h5>
+                            <p>We use the Perplexity AI API to discover emerging skills in cybersecurity and AI fields through real-time web intelligence.</p>
+                            
+                            <h6>Key Activities:</h6>
+                            <ul>
+                                <li>Query Perplexity API for emerging skills trends</li>
+                                <li>Analyze job market demand and industry reports</li>
+                                <li>Extract skill names, descriptions, and urgency scores</li>
+                                <li>Categorize skills by domain (AI/ML, Cybersecurity, DevOps, etc.)</li>
+                                <li>Validate market demand evidence</li>
+                            </ul>
+                            
+                            <h6>Output:</h6>
+                            <ul>
+                                <li>Structured skill data with urgency scores (1-10)</li>
+                                <li>Market demand evidence and job trend analysis</li>
+                                <li>Skill categorization and relationships</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="bg-light p-3 rounded">
+                                <h6><i class="fas fa-brain me-1"></i> AI Models Used:</h6>
+                                <ul class="list-unstyled">
+                                    <li>• Perplexity API (Real-time web intelligence)</li>
+                                    <li>• OpenAI GPT-4 (Response parsing)</li>
+                                </ul>
+                                
+                                <h6><i class="fas fa-link me-1"></i> Methodology:</h6>
+                                <a href="{{ url_for('methodology') }}#skills-discovery" class="btn btn-sm btn-outline-primary">
+                                    Skills Discovery Method
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Resource Discovery -->
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-book me-2"></i>
+                        Step 2: Educational Resource Discovery
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5>Process Overview</h5>
+                            <p>For each discovered skill, we systematically discover high-quality educational resources using AI-powered web search and curation.</p>
+                            
+                            <h6>Key Activities:</h6>
+                            <ul>
+                                <li>Generate targeted search queries for each skill</li>
+                                <li>Search across multiple educational platforms</li>
+                                <li>Filter for credible sources and current content</li>
+                                <li>Extract resource metadata (title, description, type, duration)</li>
+                                <li>Validate resource accessibility and quality</li>
+                            </ul>
+                            
+                            <h6>Resource Types Discovered:</h6>
+                            <ul>
+                                <li>YouTube videos and tutorials</li>
+                                <li>Online courses (Coursera, edX, Udemy)</li>
+                                <li>Official documentation (NIST, OWASP, etc.)</li>
+                                <li>Technical guides and whitepapers</li>
+                                <li>Tools and practical resources</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="bg-light p-3 rounded">
+                                <h6><i class="fas fa-brain me-1"></i> AI Models Used:</h6>
+                                <ul class="list-unstyled">
+                                    <li>• Perplexity API (Resource discovery)</li>
+                                    <li>• OpenAI GPT-4 (Content validation)</li>
+                                </ul>
+                                
+                                <h6><i class="fas fa-link me-1"></i> Methodology:</h6>
+                                <a href="{{ url_for('methodology') }}#resource-discovery" class="btn btn-sm btn-outline-success">
+                                    Resource Discovery Method
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: AI Content Analysis -->
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-brain me-2"></i>
+                        Step 3: Comprehensive AI Content Analysis
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5>Process Overview</h5>
+                            <p>Each resource undergoes deep AI analysis to extract learning value, key concepts, and educational insights.</p>
+                            
+                            <h6>Analysis Components:</h6>
+                            <ul>
+                                <li><strong>Content Summarization:</strong> AI-generated summaries of key topics</li>
+                                <li><strong>Concept Extraction:</strong> Identification of core learning concepts</li>
+                                <li><strong>Learning Objectives:</strong> What learners will achieve</li>
+                                <li><strong>Prerequisites Analysis:</strong> Required background knowledge</li>
+                                <li><strong>Practical Applications:</strong> Real-world use cases</li>
+                                <li><strong>Best Practices:</strong> Industry-recommended approaches</li>
+                                <li><strong>Common Pitfalls:</strong> Things to avoid</li>
+                            </ul>
+                            
+                            <h6>Special Processing:</h6>
+                            <ul>
+                                <li><strong>YouTube Videos:</strong> Content analysis based on titles and descriptions</li>
+                                <li><strong>Documentation:</strong> Technical depth and comprehensiveness assessment</li>
+                                <li><strong>Courses:</strong> Curriculum structure and learning path analysis</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="bg-light p-3 rounded">
+                                <h6><i class="fas fa-brain me-1"></i> AI Models Used:</h6>
+                                <ul class="list-unstyled">
+                                    <li>• OpenAI GPT-4 (Primary analysis)</li>
+                                    <li>• Anthropic Claude (Validation)</li>
+                                    <li>• YouTube API (Metadata extraction)</li>
+                                </ul>
+                                
+                                <h6><i class="fas-link me-1"></i> Methodology:</h6>
+                                <a href="{{ url_for('methodology') }}#content-analysis" class="btn btn-sm btn-outline-info">
+                                    Content Analysis Method
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Quality Assessment -->
+            <div class="card mb-4">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0">
+                        <i class="fas fa-star me-2"></i>
+                        Step 4: Multi-Factor Quality Assessment
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5>Process Overview</h5>
+                            <p>Resources undergo comprehensive quality assessment using multiple AI-analyzed factors to ensure learners get the best materials first.</p>
+                            
+                            <h6>Quality Factors (Weighted):</h6>
+                            <ul>
+                                <li><strong>Content Relevance (25%):</strong> Alignment with AI and cybersecurity topics</li>
+                                <li><strong>Technical Depth (20%):</strong> Comprehensiveness and technical rigor</li>
+                                <li><strong>Source Credibility (15%):</strong> Reputation and authority of publisher</li>
+                                <li><strong>Content Freshness (15%):</strong> Currency and up-to-date information</li>
+                                <li><strong>Accessibility (10%):</strong> Ease of access and understanding</li>
+                                <li><strong>Production Quality (10%):</strong> Overall presentation and clarity</li>
+                                <li><strong>Engagement Potential (5%):</strong> Likelihood to engage learners</li>
+                            </ul>
+                            
+                            <h6>Quality Scoring:</h6>
+                            <ul>
+                                <li>🏆 <strong>Excellent (0.8+):</strong> Top-tier resources</li>
+                                <li>⭐ <strong>High (0.7-0.79):</strong> High-quality resources</li>
+                                <li>👍 <strong>Good (0.6-0.69):</strong> Solid learning materials</li>
+                                <li>📚 <strong>Moderate (<0.6):</strong> Basic resources</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="bg-light p-3 rounded">
+                                <h6><i class="fas fa-brain me-1"></i> AI Models Used:</h6>
+                                <ul class="list-unstyled">
+                                    <li>• Custom Quality Assessment Algorithm</li>
+                                    <li>• OpenAI GPT-4 (Quality summary generation)</li>
+                                </ul>
+                                
+                                <h6><i class="fas fa-link me-1"></i> Methodology:</h6>
+                                <a href="{{ url_for('methodology') }}#quality-assessment" class="btn btn-sm btn-outline-warning">
+                                    Quality Assessment Method
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: Interactive Learning Generation -->
+            <div class="card mb-4">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-graduation-cap me-2"></i>
+                        Step 5: Interactive Learning Content Generation
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5><i class="fas fa-question-circle me-2"></i>Quiz Generation</h5>
+                            <p>AI generates interactive quiz questions to reinforce learning and assess comprehension.</p>
+                            
+                            <h6>Quiz Components:</h6>
+                            <ul>
+                                <li>Multiple-choice questions with 4 options</li>
+                                <li>Detailed explanations for each answer</li>
+                                <li>Progressive difficulty levels</li>
+                                <li>Concept reinforcement focus</li>
+                            </ul>
+                            
+                            <div class="mt-3">
+                                <a href="{{ url_for('methodology') }}#quiz-generation" class="btn btn-sm btn-outline-secondary">
+                                    Quiz Generation Method
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5><i class="fas fa-project-diagram me-2"></i>Project Ideas Generation</h5>
+                            <p>AI creates practical project ideas that apply the learned concepts to real-world scenarios.</p>
+                            
+                            <h6>Project Components:</h6>
+                            <ul>
+                                <li>Hands-on implementation projects</li>
+                                <li>Real-world problem solving</li>
+                                <li>Industry-relevant contexts</li>
+                                <li>Scalable difficulty levels</li>
+                            </ul>
+                            
+                            <div class="mt-3">
+                                <a href="{{ url_for('methodology') }}#project-generation" class="btn btn-sm btn-outline-secondary">
+                                    Project Generation Method
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 6: Curation and Presentation -->
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-list me-2"></i>
+                        Step 6: Intelligent Curation and Presentation
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5>Process Overview</h5>
+                            <p>The final step involves intelligent curation and presentation of resources to provide the best learning experience.</p>
+                            
+                            <h6>Curation Features:</h6>
+                            <ul>
+                                <li><strong>Quality-Based Ranking:</strong> Best resources appear first</li>
+                                <li><strong>Skill-Based Grouping:</strong> Resources organized by learning paths</li>
+                                <li><strong>Difficulty Progression:</strong> Beginner to advanced pathways</li>
+                                <li><strong>Multi-Modal Learning:</strong> Videos, courses, documentation, and tools</li>
+                                <li><strong>Real-Time Updates:</strong> Continuous discovery and assessment</li>
+                            </ul>
+                            
+                            <h6>User Interface Features:</h6>
+                            <ul>
+                                <li>Quality indicators and explanations</li>
+                                <li>Interactive quizzes and projects</li>
+                                <li>Progress tracking and recommendations</li>
+                                <li>Comprehensive search and filtering</li>
+                                <li>Mobile-responsive design</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="bg-light p-3 rounded">
+                                <h6><i class="fas fa-chart-line me-1"></i> Current Stats:</h6>
+                                <ul class="list-unstyled">
+                                    <li>• <strong>91</strong> Total Resources</li>
+                                    <li>• <strong>11</strong> Emerging Skills</li>
+                                    <li>• <strong>35</strong> Interactive Quizzes</li>
+                                    <li>• <strong>70</strong> Project Ideas</li>
+                                    <li>• <strong>37</strong> AI Analyses</li>
+                                </ul>
+                                
+                                <h6><i class="fas fa-link me-1"></i> Methodology:</h6>
+                                <a href="{{ url_for('methodology') }}#curation-presentation" class="btn btn-sm btn-outline-dark">
+                                    Curation Method
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Continuous Improvement -->
+            <div class="card mb-4">
+                <div class="card-header bg-gradient" style="background: linear-gradient(45deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <h4 class="mb-0">
+                        <i class="fas fa-sync me-2"></i>
+                        Continuous Improvement Loop
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <h5>Adaptive Learning System</h5>
+                            <p>Our workflow includes continuous feedback loops to improve resource quality and discovery over time.</p>
+                            
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h6><i class="fas fa-chart-line me-1"></i> Performance Monitoring</h6>
+                                    <ul>
+                                        <li>Resource engagement analytics</li>
+                                        <li>Quiz completion rates</li>
+                                        <li>Project implementation success</li>
+                                        <li>User feedback integration</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6><i class="fas fa-robot me-1"></i> AI Model Updates</h6>
+                                    <ul>
+                                        <li>Regular prompt engineering improvements</li>
+                                        <li>Quality assessment refinements</li>
+                                        <li>New AI model integration</li>
+                                        <li>Bias detection and mitigation</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6><i class="fas fa-refresh me-1"></i> Content Refresh</h6>
+                                    <ul>
+                                        <li>Weekly skills trend analysis</li>
+                                        <li>Monthly resource quality re-assessment</li>
+                                        <li>Quarterly curriculum updates</li>
+                                        <li>Annual methodology review</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical Implementation -->
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-code me-2"></i>
+                        Technical Implementation
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Technology Stack</h5>
+                            <ul>
+                                <li><strong>Backend:</strong> Python Flask, PostgreSQL</li>
+                                <li><strong>Frontend:</strong> Bootstrap 5, JavaScript</li>
+                                <li><strong>AI APIs:</strong> OpenAI GPT-4, Anthropic Claude, Perplexity</li>
+                                <li><strong>External APIs:</strong> YouTube API, Web scraping</li>
+                                <li><strong>Deployment:</strong> Heroku, Docker-ready</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Key Features</h5>
+                            <ul>
+                                <li>Asynchronous AI processing</li>
+                                <li>Real-time quality assessment</li>
+                                <li>Scalable resource discovery</li>
+                                <li>Interactive learning components</li>
+                                <li>Comprehensive admin dashboard</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+.card-header {
+    border-radius: 0.5rem 0.5rem 0 0 !important;
+}
+
+.bg-gradient {
+    background: linear-gradient(45deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+.workflow-step {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.workflow-step::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to bottom, #007bff, #28a745);
+}
+
+.workflow-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: -5px;
+    bottom: -10px;
+    width: 12px;
+    height: 12px;
+    background: #28a745;
+    border-radius: 50%;
+}
+</style>
+{% endblock %} 

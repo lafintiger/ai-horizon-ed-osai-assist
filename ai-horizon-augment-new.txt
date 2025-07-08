@@ -1,0 +1,155 @@
+
+🤝 AI AUGMENT
+Roles where AI enhances human capabilities through collaboration rather than replacement
+📄
+256
+articles
+📊
+0.447
+avg confidence
+256
+Articles Analyzed
+52
+High Confidence
+44.7%
+Avg Confidence
+7/7/2025
+Generated
+📋 Executive Summary
+## Executive Summary
+
+AI AUGMENT - Human-AI Collaboration: Comprehensive Analysis
+Executive Summary
+Based on analysis of 256 articles with AI augmentation indicators, our research reveals the emergence of powerful human-AI collaboration models. With an average confidence score of 0.447, and 52 articles showing high confidence (≥0.7) in augmentation scenarios, the evidence suggests that AI will significantly enhance human capabilities rather than replace them.
+Overall Findings
+AI augmentation in cybersecurity focuses on enhancing human expertise with intelligent tools and insights. The augmentation patterns show enhancement in:
+•	1. **Threat Hunting**: AI-powered analytics to identify sophisticated threats
+•	2. **Incident Response**: Accelerated investigation with AI-assisted analysis
+•	3. **Security Analysis**: Enhanced pattern recognition and anomaly detection
+•	4. **Risk Assessment**: Data-driven insights supporting human judgment
+The evidence indicates that AI augmentation will be most valuable in complex analytical tasks requiring both computational power and human expertise.
+
+🎯 Key Jobs & Tasks
+SECURITY RESEARCH
+59.1%
+AI enhances this role through augment, assist, improving human capabilities and efficiency.
+📄 Evidence from 2 articles
+THREAT INTELLIGENCE
+56.4%
+New roles such as AI Integration Specialist and Threat Intelligence Analyst with AI Focus are emerging, highlighting the need for professionals to adapt to AI technologies.
+📄 Evidence from 50 articles
+PENETRATION TESTING
+54.5%
+AI enhances this role through augment, assist, improving human capabilities and efficiency.
+📄 Evidence from 10 articles
+SECURITY ANALYST
+54.4%
+The role of cybersecurity analysts is evolving; while AI automates routine tasks, human expertise is still crucial for strategic decision-making and handling complex threats.
+📄 Evidence from 67 articles
+THREAT HUNTING
+50.6%
+Collaboration between AI systems and human analysts is the optimal approach, allowing professionals to focus on higher-level functions like threat hunting and policy development.
+📄 Evidence from 56 articles
+📚 Supporting Citations
+[1] Goldman Sachs Predicts 300 Million Jobs Will Be Lost Or Degraded By Artificial Intelligence
+Evidence: Contains keyword: assist, Contains keyword: enhance
+100.0%
+[2] AI ICT report
+Evidence: augment, assist
+100.0%
+[3] WP140_web
+Evidence: augment, assist
+100.0%
+[4] AI Security Risks Uncovered: What You Must Know in 2025 | TTMS
+Evidence: augment, assist
+100.0%
+[5] Darktrace 2025 Report: AI threats surge, but cyber resilience grows amidst skills gap - Industrial Cyber
+Evidence: augment, assist
+100.0%
+[6] AI and Cybersecurity in 2024: Trends and Challenges by Dr. Shahid Masood
+Evidence: assist, enhance
+100.0%
+[7] Cybersecurity, AI, and their Effects on the Law and Law Firms
+Evidence: augment, assist
+90.9%
+[8] Top 5 AI SOC Analyst Platforms to Watch out for in 2025
+Evidence: augment, assist
+
+
+✨ AI NEW TASKS
+New roles and responsibilities that emerge due to AI adoption in cybersecurity
+📄
+112
+articles
+📊
+0.432
+avg confidence
+112
+Articles Analyzed
+14
+High Confidence
+43.2%
+Avg Confidence
+7/7/2025
+Generated
+📋 Executive Summary
+## Executive Summary
+
+AI NEW TASKS - Jobs Created by AI Technology: Comprehensive Analysis
+Executive Summary
+Based on analysis of 112 articles with AI-driven job creation indicators, our research reveals the emergence of entirely new cybersecurity roles. With an average confidence score of 0.432, and 14 articles showing high confidence (≥0.7) in new task creation, the evidence suggests that AI adoption will create specialized positions requiring hybrid skills.
+Overall Findings
+AI technology adoption in cybersecurity is creating new specialized roles that didn't exist before. The new task patterns show emergence of:
+•	1. **AI Security Engineering**: Securing AI systems and models
+•	2. **AI Governance and Compliance**: Ensuring responsible AI deployment
+•	3. **AI Operations (MLSecOps)**: Managing AI/ML security pipelines
+•	4. **AI Ethics and Risk Management**: Overseeing ethical AI implementation
+The evidence indicates that new tasks will require deep understanding of both traditional cybersecurity and AI/ML technologies.
+
+🎯 Key Jobs & Tasks
+PROMPT ENGINEER
+67.5%
+Generative AI skills, particularly in prompt engineering and AI governance, are becoming critical for both individual professionals and organizations.
+📄 Evidence from 16 articles
+AI SECURITY ENGINEER
+50.7%
+The demand for AI Security Engineers and related roles is surging, indicating a need for professionals who can secure AI systems and applications.
+📄 Evidence from 69 articles
+MLSECOPS
+49.6%
+Emerging roles such as AI Security Engineer and MLSecOps Engineer are in high demand, reflecting the need for professionals who can secure AI systems and manage AI-driven incidents.
+📄 Evidence from 69 articles
+AI GOVERNANCE
+46.7%
+As regulatory scrutiny around AI grows, professionals with expertise in AI governance and compliance will be essential for organizations to navigate evolving standards.
+📄 Evidence from 87 articles
+AI SECURITY ARCHITECT
+40.0%
+This new role emerges from ai ethics, ai governance, requiring specialized AI-related expertise.
+📄 Evidence from 2 articles
+📚 Supporting Citations
+[1] Yes, AI Will Replace Cybersecurity Jobs (If You Let It) - PurpleSec
+Evidence: emerging roles, machine learning engineer
+100.0%
+[2] The SignalFire State of Talent Report - 2025
+Evidence: Contains keyword: new job, Contains keyword: opportunit
+100.0%
+[3] AI Engineering Specialization - Coursera
+Evidence: new roles, ai engineer
+100.0%
+[4] IBM AI Engineering Professional Certificate - Coursera
+Evidence: new roles, ai engineer
+100.0%
+[5] Join Team Coursera
+Evidence: new roles, ai engineer
+100.0%
+[6] AI Security | Coursera
+Evidence: new roles, ai engineer
+100.0%
+[7] AI ICT report
+Evidence: new roles, ai specialist
+100.0%
+[8] Cybersecurity Jobs in Most Demand in 2025 - Cybersecurity Insiders
+Evidence: new roles, ai engineer
+
+

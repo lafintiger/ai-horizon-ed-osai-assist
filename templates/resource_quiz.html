@@ -1,0 +1,478 @@
+{% extends "base.html" %}
+
+{% block title %}{{ resource.title }} - Interactive Quiz {% endblock %}
+
+{% block content %}
+<div class="quiz-page">
+    <!-- Resource Header -->
+    <div class="row align-items-center mb-4">
+        <div class="col-md-8">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/browse/resources">Resources</a></li>
+                    <li class="breadcrumb-item"><a href="/resources/{{ resource.id }}/analysis">{{ resource.title }}</a></li>
+                    <li class="breadcrumb-item active">Quiz</li>
+                </ol>
+            </nav>
+            <h1 class="mb-2">{{ resource.title }}</h1>
+            <p class="text-muted mb-3">Test your knowledge with this interactive quiz</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{{ resource.url }}" target="_blank" class="btn btn-outline-primary">
+                <i class="fas fa-external-link-alt me-2"></i>View Resource
+            </a>
+        </div>
+    </div>
+
+    <!-- Analysis Navigation -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-4">
+                            <div class="p-3 border-end">
+                                <a href="/resources/{{ resource.id }}/analysis" class="text-decoration-none">
+                                    <i class="fas fa-brain fa-2x text-muted mb-2"></i>
+                                    <h6 class="mb-1">Analysis & Wisdom</h6>
+                                    <small class="text-muted">Key insights & takeaways</small>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 border-end">
+                                <i class="fas fa-question-circle fa-2x text-info mb-2"></i>
+                                <h6 class="mb-1">Interactive Quiz</h6>
+                                <small class="text-muted">Test your knowledge</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3">
+                                <a href="/resources/{{ resource.id }}/projects" class="text-decoration-none">
+                                    <i class="fas fa-project-diagram fa-2x text-muted mb-2"></i>
+                                    <h6 class="mb-1">Project Ideas</h6>
+                                    <small class="text-muted">Hands-on practice</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if questions %}
+    <!-- Quiz Content -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div id="quiz-container" class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <h5 class="mb-0">
+                                <i class="fas fa-question-circle me-2"></i>Interactive Quiz
+                            </h5>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <div class="progress" style="height: 20px;">
+                                <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%">
+                                    0%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="quiz-questions">
+                        {% for question in questions %}
+                        <div class="question-container" data-question-id="{{ question.id }}" style="display: {% if loop.index == 1 %}block{% else %}none{% endif %};">
+                            <div class="question-header mb-3">
+                                <span class="badge bg-primary">Question {{ loop.index }} of {{ questions|length }}</span>
+                                <h6 class="mt-2">{{ question.question_text }}</h6>
+                            </div>
+                            <div class="question-options">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="question_{{ question.id }}" id="q{{ question.id }}_a" value="A">
+                                    <label class="form-check-label" for="q{{ question.id }}_a">
+                                        <strong>A.</strong> {{ question.option_a }}
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="question_{{ question.id }}" id="q{{ question.id }}_b" value="B">
+                                    <label class="form-check-label" for="q{{ question.id }}_b">
+                                        <strong>B.</strong> {{ question.option_b }}
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="question_{{ question.id }}" id="q{{ question.id }}_c" value="C">
+                                    <label class="form-check-label" for="q{{ question.id }}_c">
+                                        <strong>C.</strong> {{ question.option_c }}
+                                    </label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="radio" name="question_{{ question.id }}" id="q{{ question.id }}_d" value="D">
+                                    <label class="form-check-label" for="q{{ question.id }}_d">
+                                        <strong>D.</strong> {{ question.option_d }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="question-navigation">
+                                {% if loop.index > 1 %}
+                                <button class="btn btn-outline-secondary me-2" onclick="previousQuestion()">
+                                    <i class="fas fa-arrow-left me-1"></i>Previous
+                                </button>
+                                {% endif %}
+                                {% if loop.index < questions|length %}
+                                <button class="btn btn-primary" onclick="nextQuestion()">
+                                    Next <i class="fas fa-arrow-right ms-1"></i>
+                                </button>
+                                {% else %}
+                                <button class="btn btn-success" onclick="submitQuiz()">
+                                    <i class="fas fa-check me-1"></i>Submit Quiz
+                                </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Results (hidden initially) -->
+            <div id="quiz-results" class="card mt-4" style="display: none;">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-line me-2"></i>Quiz Results
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div id="results-summary" class="text-center mb-4">
+                        <!-- Results will be populated here -->
+                    </div>
+                    <div id="results-details">
+                        <!-- Detailed results will be populated here -->
+                    </div>
+                    <div class="text-center mt-4">
+                        <button class="btn btn-primary me-2" onclick="restartQuiz()">
+                            <i class="fas fa-redo me-1"></i>Retake Quiz
+                        </button>
+                        <a href="/resources/{{ resource.id }}/analysis" class="btn btn-outline-info">
+                            <i class="fas fa-brain me-1"></i>Review Analysis
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Sidebar -->
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>Quiz Information
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-sm-6"><strong>Questions:</strong></div>
+                        <div class="col-sm-6">{{ questions|length }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-6"><strong>Time:</strong></div>
+                        <div class="col-sm-6">No time limit</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-6"><strong>Type:</strong></div>
+                        <div class="col-sm-6">Multiple Choice</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-6"><strong>Attempts:</strong></div>
+                        <div class="col-sm-6">Unlimited</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Navigation -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-list me-2"></i>Question Navigation
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for question in questions %}
+                        <div class="col-3 mb-2">
+                            <button class="btn btn-outline-secondary btn-sm w-100 question-nav-btn" 
+                                    data-question-index="{{ loop.index0 }}"
+                                    onclick="goToQuestion({{ loop.index0 }})">
+                                {{ loop.index }}
+                            </button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Skills -->
+            {% if skills %}
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-link me-2"></i>Related Skills
+                    </h6>
+                </div>
+                <div class="card-body">
+                    {% for skill in skills %}
+                    <a href="/skills/{{ skill.id }}" class="btn btn-outline-primary btn-sm me-2 mb-2">
+                        {{ skill.skill_name }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% else %}
+    <!-- No Quiz Available -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-question-circle fa-3x text-muted mb-3"></i>
+                    <h4>Quiz Not Available</h4>
+                    <p class="text-muted">This resource doesn't have a quiz yet. Quizzes are generated automatically to test your understanding of the material.</p>
+                    <div class="mt-4">
+                        <a href="/resources/{{ resource.id }}/analysis" class="btn btn-primary">
+                            <i class="fas fa-brain me-2"></i>View Analysis
+                        </a>
+                        <a href="/browse/resources" class="btn btn-outline-secondary ms-2">
+                            <i class="fas fa-arrow-left me-2"></i>Browse Resources
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+let currentQuestionIndex = 0;
+let totalQuestions = {{ questions|length if questions else 0 }};
+let answers = {};
+
+function updateProgressBar() {
+    const progress = ((currentQuestionIndex + 1) / totalQuestions) * 100;
+    document.getElementById('progress-bar').style.width = progress + '%';
+    document.getElementById('progress-bar').textContent = Math.round(progress) + '%';
+}
+
+function updateQuestionNavigation() {
+    // Update navigation buttons
+    const navButtons = document.querySelectorAll('.question-nav-btn');
+    navButtons.forEach((btn, index) => {
+        btn.classList.remove('btn-primary', 'btn-success');
+        btn.classList.add('btn-outline-secondary');
+        
+        if (index === currentQuestionIndex) {
+            btn.classList.remove('btn-outline-secondary');
+            btn.classList.add('btn-primary');
+        }
+        
+        // Mark answered questions
+        const questionId = getQuestionIdByIndex(index);
+        if (answers[questionId]) {
+            btn.classList.remove('btn-outline-secondary');
+            btn.classList.add('btn-success');
+        }
+    });
+}
+
+function getQuestionIdByIndex(index) {
+    const questionContainers = document.querySelectorAll('.question-container');
+    if (questionContainers[index]) {
+        return questionContainers[index].dataset.questionId;
+    }
+    return null;
+}
+
+function goToQuestion(index) {
+    if (index >= 0 && index < totalQuestions) {
+        // Hide current question
+        document.querySelectorAll('.question-container').forEach(container => {
+            container.style.display = 'none';
+        });
+        
+        // Show target question
+        const targetContainer = document.querySelectorAll('.question-container')[index];
+        if (targetContainer) {
+            targetContainer.style.display = 'block';
+            currentQuestionIndex = index;
+            updateProgressBar();
+            updateQuestionNavigation();
+        }
+    }
+}
+
+function nextQuestion() {
+    if (currentQuestionIndex < totalQuestions - 1) {
+        goToQuestion(currentQuestionIndex + 1);
+    }
+}
+
+function previousQuestion() {
+    if (currentQuestionIndex > 0) {
+        goToQuestion(currentQuestionIndex - 1);
+    }
+}
+
+function submitQuiz() {
+    // Collect all answers
+    const formData = new FormData();
+    answers = {};
+    
+    document.querySelectorAll('.question-container').forEach(container => {
+        const questionId = container.dataset.questionId;
+        const selectedOption = container.querySelector('input[type="radio"]:checked');
+        if (selectedOption) {
+            answers[questionId] = selectedOption.value;
+        }
+    });
+    
+    // Submit quiz
+    fetch('/api/quiz/{{ resource.id }}/submit', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            answers: answers
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            displayResults(data);
+        } else {
+            alert('Error submitting quiz: ' + data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while submitting the quiz.');
+    });
+}
+
+function displayResults(data) {
+    // Hide quiz container
+    document.getElementById('quiz-container').style.display = 'none';
+    
+    // Show results
+    const resultsContainer = document.getElementById('quiz-results');
+    resultsContainer.style.display = 'block';
+    
+    // Display summary
+    const summaryHtml = `
+        <div class="row">
+            <div class="col-md-3">
+                <div class="text-center p-3 border rounded">
+                    <h3 class="text-primary mb-1">${Math.round(data.score)}%</h3>
+                    <small class="text-muted">Overall Score</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center p-3 border rounded">
+                    <h3 class="text-success mb-1">${data.correct_answers}</h3>
+                    <small class="text-muted">Correct</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center p-3 border rounded">
+                    <h3 class="text-danger mb-1">${data.total_questions - data.correct_answers}</h3>
+                    <small class="text-muted">Incorrect</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center p-3 border rounded">
+                    <h3 class="text-info mb-1">${data.total_questions}</h3>
+                    <small class="text-muted">Total</small>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 text-center">
+            <h4 class="mb-2">${data.performance_level}</h4>
+            <p class="text-muted">${data.performance_message}</p>
+        </div>
+    `;
+    document.getElementById('results-summary').innerHTML = summaryHtml;
+    
+    // Display detailed results
+    let detailsHtml = '<h6 class="mb-3">Question Details:</h6>';
+    data.results.forEach((result, index) => {
+        const isCorrect = result.is_correct;
+        detailsHtml += `
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <div class="text-center">
+                                <i class="fas fa-${isCorrect ? 'check-circle text-success' : 'times-circle text-danger'} fa-2x"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-11">
+                            <h6 class="mb-2">Question ${index + 1}</h6>
+                            <p class="mb-2">${result.question_text}</p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <small class="text-muted">Your answer:</small>
+                                    <p class="mb-1 ${isCorrect ? 'text-success' : 'text-danger'}">
+                                        <strong>${result.user_answer}.</strong> ${result.options[result.user_answer]}
+                                    </p>
+                                </div>
+                                <div class="col-md-6">
+                                    <small class="text-muted">Correct answer:</small>
+                                    <p class="mb-1 text-success">
+                                        <strong>${result.correct_answer}.</strong> ${result.options[result.correct_answer]}
+                                    </p>
+                                </div>
+                            </div>
+                            ${result.explanation ? `<div class="mt-2 p-2 bg-light rounded"><small>${result.explanation}</small></div>` : ''}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    document.getElementById('results-details').innerHTML = detailsHtml;
+}
+
+function restartQuiz() {
+    // Reset quiz state
+    currentQuestionIndex = 0;
+    answers = {};
+    
+    // Reset all form inputs
+    document.querySelectorAll('input[type="radio"]').forEach(input => {
+        input.checked = false;
+    });
+    
+    // Show quiz container
+    document.getElementById('quiz-container').style.display = 'block';
+    document.getElementById('quiz-results').style.display = 'none';
+    
+    // Go to first question
+    goToQuestion(0);
+}
+
+// Initialize quiz
+document.addEventListener('DOMContentLoaded', function() {
+    if (totalQuestions > 0) {
+        updateProgressBar();
+        updateQuestionNavigation();
+    }
+});
+</script>
+{% endblock %} 

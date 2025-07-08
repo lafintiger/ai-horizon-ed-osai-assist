@@ -1,0 +1,594 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - AI-Horizon Ed Platform{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>
+        <i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard
+    </h1>
+    <span class="badge bg-success">
+        <i class="fas fa-check me-1"></i>Logged In
+    </span>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="mb-0">{{ total_skills }}</h4>
+                        <p class="mb-0">Total Skills</p>
+                    </div>
+                    <div>
+                        <i class="fas fa-brain fa-2x opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="mb-0">{{ total_resources }}</h4>
+                        <p class="mb-0">Total Resources</p>
+                    </div>
+                    <div>
+                        <i class="fas fa-book fa-2x opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="mb-0">{{ pending_resources }}</h4>
+                        <p class="mb-0">Pending Review</p>
+                    </div>
+                    <div>
+                        <i class="fas fa-clock fa-2x opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Management Options -->
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-brain me-2"></i>Skills Management
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    Manage emerging skills, set urgency scores, and organize categories.
+                </p>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary" onclick="alert('Skills management coming soon!')">
+                        <i class="fas fa-plus me-2"></i>Add New Skill
+                    </button>
+                    <button class="btn btn-outline-primary" onclick="alert('Skills list coming soon!')">
+                        <i class="fas fa-list me-2"></i>View All Skills
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-book me-2"></i>Resources Management
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    Curate educational resources, review AI-generated content, and manage learning paths.
+                </p>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-success" onclick="alert('Resource management coming soon!')">
+                        <i class="fas fa-plus me-2"></i>Add Resource
+                    </button>
+                    <button class="btn btn-outline-success" onclick="alert('Resource discovery coming soon!')">
+                        <i class="fas fa-search me-2"></i>Discover Resources
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-robot me-2"></i>AI Operations
+                </h5>
+                <span id="ai-status-badge" class="badge bg-secondary">
+                    <i class="fas fa-spinner fa-spin me-1"></i>Checking...
+                </span>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    AI-powered skills discovery, resource curation, and content analysis.
+                </p>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-info" onclick="discoverSkills()" id="discover-skills-btn">
+                        <i class="fas fa-brain me-2"></i>Discover Emerging Skills
+                    </button>
+                    <button class="btn btn-outline-info" onclick="showResourceDiscovery()" id="discover-resources-btn">
+                        <i class="fas fa-search me-2"></i>Discover Resources
+                    </button>
+                    <button class="btn btn-outline-info" onclick="showAnalyzeResources()" id="analyze-resources-btn">
+                        <i class="fas fa-magic me-2"></i>Analyze Resources
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-database me-2"></i>Data Management
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    Import data from AI-Horizon platform and manage bulk operations.
+                </p>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-warning" onclick="importSampleData()">
+                        <i class="fas fa-upload me-2"></i>Import Sample Data
+                    </button>
+                    <button class="btn btn-outline-warning" onclick="alert('Export functionality coming soon!')">
+                        <i class="fas fa-download me-2"></i>Export Data
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-bolt me-2"></i>Quick Actions
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-lg-2 col-md-4 col-sm-6">
+                        <div class="d-grid">
+                            <a href="{{ url_for('api_skills') }}" class="btn btn-outline-primary" target="_blank">
+                                <i class="fas fa-code me-2"></i>View API
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6">
+                        <div class="d-grid">
+                            <a href="{{ url_for('index') }}" class="btn btn-outline-success">
+                                <i class="fas fa-eye me-2"></i>View Public Site
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6">
+                        <div class="d-grid">
+                            <a href="{{ url_for('browse_resources') }}" class="btn btn-outline-info">
+                                <i class="fas fa-book-open me-2"></i>Browse Resources
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6">
+                        <div class="d-grid">
+                            <a href="{{ url_for('admin_prompts') }}" class="btn btn-outline-warning">
+                                <i class="fas fa-cog me-2"></i>AI Prompts
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6">
+                        <div class="d-grid">
+                            <a href="{{ url_for('admin_quiz_management') }}" class="btn btn-outline-dark">
+                                <i class="fas fa-question-circle me-2"></i>Quiz Management
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6">
+                        <div class="d-grid">
+                            <button class="btn btn-outline-info" onclick="alert('System health check coming soon!')">
+                                <i class="fas fa-heartbeat me-2"></i>Health Check
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6">
+                        <div class="d-grid">
+                            <a href="{{ url_for('admin_logout') }}" class="btn btn-outline-danger">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-history me-2"></i>Recent Activity
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Activity logging will be implemented in the next phase.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- AI Operations Modals -->
+<div class="modal fade" id="skillsDiscoveryModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-brain me-2"></i>AI Skills Discovery
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="skillsDiscoveryForm">
+                    <div class="mb-3">
+                        <label for="domain" class="form-label">Domain:</label>
+                        <select class="form-select" id="domain" name="domain">
+                            <option value="AI and Cybersecurity">AI and Cybersecurity</option>
+                            <option value="Machine Learning and Data Science">Machine Learning and Data Science</option>
+                            <option value="Cloud Security">Cloud Security</option>
+                            <option value="DevSecOps">DevSecOps</option>
+                        </select>
+                    </div>
+                    <div id="skillsDiscoveryProgress" class="d-none">
+                        <div class="progress mb-3">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%">
+                                Discovering skills using AI...
+                            </div>
+                        </div>
+                    </div>
+                    <div id="skillsDiscoveryResults" class="d-none">
+                        <h6>Discovery Results:</h6>
+                        <div id="skillsResultsList"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="executeSkillsDiscovery()">
+                    <i class="fas fa-brain me-2"></i>Start Discovery
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="resourceDiscoveryModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-search me-2"></i>AI Resource Discovery
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="resourceDiscoveryForm">
+                    <div class="mb-3">
+                        <label for="skillSelect" class="form-label">Select Skill:</label>
+                        <select class="form-select" id="skillSelect" name="skillId">
+                            <option value="">Loading skills...</option>
+                        </select>
+                    </div>
+                    <div id="resourceDiscoveryProgress" class="d-none">
+                        <div class="progress mb-3">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%">
+                                Discovering resources using AI...
+                            </div>
+                        </div>
+                    </div>
+                    <div id="resourceDiscoveryResults" class="d-none">
+                        <h6>Discovery Results:</h6>
+                        <div id="resourceResultsList"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="executeResourceDiscovery()">
+                    <i class="fas fa-search me-2"></i>Start Discovery
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+// AI Services Management
+document.addEventListener('DOMContentLoaded', function() {
+    checkAIStatus();
+    loadSkillsForDiscovery();
+});
+
+async function checkAIStatus() {
+    try {
+        const response = await fetch('/api/admin/ai/status');
+        const data = await response.json();
+        
+        const badge = document.getElementById('ai-status-badge');
+        if (data.ai_services_available) {
+            badge.innerHTML = '<i class="fas fa-check me-1"></i>AI Ready';
+            badge.className = 'badge bg-success';
+            
+            // Enable AI buttons
+            document.getElementById('discover-skills-btn').disabled = false;
+            document.getElementById('discover-resources-btn').disabled = false;
+            document.getElementById('analyze-resources-btn').disabled = false;
+        } else {
+            badge.innerHTML = '<i class="fas fa-exclamation-triangle me-1"></i>AI Unavailable';
+            badge.className = 'badge bg-danger';
+            
+            // Disable AI buttons
+            document.getElementById('discover-skills-btn').disabled = true;
+            document.getElementById('discover-resources-btn').disabled = true;
+            document.getElementById('analyze-resources-btn').disabled = true;
+        }
+    } catch (error) {
+        console.error('Error checking AI status:', error);
+        const badge = document.getElementById('ai-status-badge');
+        badge.innerHTML = '<i class="fas fa-exclamation-triangle me-1"></i>Error';
+        badge.className = 'badge bg-danger';
+    }
+}
+
+async function loadSkillsForDiscovery() {
+    try {
+        const response = await fetch('/api/skills');
+        const skills = await response.json();
+        
+        const select = document.getElementById('skillSelect');
+        select.innerHTML = '<option value="">Select a skill...</option>';
+        
+        skills.forEach(skill => {
+            const option = document.createElement('option');
+            option.value = skill.id;
+            option.textContent = skill.skill_name;
+            select.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error loading skills:', error);
+    }
+}
+
+function discoverSkills() {
+    const modal = new bootstrap.Modal(document.getElementById('skillsDiscoveryModal'));
+    modal.show();
+}
+
+function showResourceDiscovery() {
+    const modal = new bootstrap.Modal(document.getElementById('resourceDiscoveryModal'));
+    modal.show();
+}
+
+function showAnalyzeResources() {
+    alert('Resource analysis feature coming soon! This will analyze existing resources for quality and learning objectives.');
+}
+
+async function executeSkillsDiscovery() {
+    const domain = document.getElementById('domain').value;
+    const progressDiv = document.getElementById('skillsDiscoveryProgress');
+    const resultsDiv = document.getElementById('skillsDiscoveryResults');
+    
+    // Show progress
+    progressDiv.classList.remove('d-none');
+    resultsDiv.classList.add('d-none');
+    
+    try {
+        const response = await fetch('/api/admin/ai/discover-skills', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ domain })
+        });
+        
+        const data = await response.json();
+        
+        // Hide progress
+        progressDiv.classList.add('d-none');
+        
+        if (data.success) {
+            // Show results
+            const resultsList = document.getElementById('skillsResultsList');
+            resultsList.innerHTML = '';
+            
+            if (data.new_skills_count > 0) {
+                const successAlert = document.createElement('div');
+                successAlert.className = 'alert alert-success';
+                successAlert.innerHTML = `
+                    <i class="fas fa-check me-2"></i>
+                    Successfully discovered ${data.discovered_skills.length} skills and added ${data.new_skills_count} new skills to the database.
+                `;
+                resultsList.appendChild(successAlert);
+                
+                // List discovered skills
+                data.discovered_skills.forEach(skill => {
+                    const skillCard = document.createElement('div');
+                    skillCard.className = 'card mb-2';
+                    skillCard.innerHTML = `
+                        <div class="card-body">
+                            <h6 class="card-title">${skill.skill_name}</h6>
+                            <p class="card-text small">${skill.description}</p>
+                            <span class="badge bg-primary">${skill.category}</span>
+                            <span class="badge bg-warning">Urgency: ${skill.urgency_score}/10</span>
+                        </div>
+                    `;
+                    resultsList.appendChild(skillCard);
+                });
+            } else {
+                const infoAlert = document.createElement('div');
+                infoAlert.className = 'alert alert-info';
+                infoAlert.innerHTML = `
+                    <i class="fas fa-info me-2"></i>
+                    All ${data.discovered_skills.length} discovered skills already exist in the database.
+                `;
+                resultsList.appendChild(infoAlert);
+            }
+            
+            resultsDiv.classList.remove('d-none');
+            
+            // Refresh page after successful discovery
+            setTimeout(() => {
+                location.reload();
+            }, 3000);
+        } else {
+            throw new Error(data.error || 'Unknown error occurred');
+        }
+    } catch (error) {
+        progressDiv.classList.add('d-none');
+        console.error('Error in skills discovery:', error);
+        alert('Error: ' + error.message);
+    }
+}
+
+async function executeResourceDiscovery() {
+    const skillId = document.getElementById('skillSelect').value;
+    
+    if (!skillId) {
+        alert('Please select a skill first.');
+        return;
+    }
+    
+    const progressDiv = document.getElementById('resourceDiscoveryProgress');
+    const resultsDiv = document.getElementById('resourceDiscoveryResults');
+    
+    // Show progress
+    progressDiv.classList.remove('d-none');
+    resultsDiv.classList.add('d-none');
+    
+    try {
+        const response = await fetch(`/api/admin/ai/discover-resources/${skillId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        const data = await response.json();
+        
+        // Hide progress
+        progressDiv.classList.add('d-none');
+        
+        if (data.success) {
+            // Show results
+            const resultsList = document.getElementById('resourceResultsList');
+            resultsList.innerHTML = '';
+            
+            if (data.new_resources_count > 0) {
+                const successAlert = document.createElement('div');
+                successAlert.className = 'alert alert-success';
+                successAlert.innerHTML = `
+                    <i class="fas fa-check me-2"></i>
+                    Successfully discovered ${data.discovered_resources.length} resources and added ${data.new_resources_count} new resources (pending approval).
+                `;
+                resultsList.appendChild(successAlert);
+                
+                // List discovered resources
+                data.discovered_resources.forEach(resource => {
+                    const resourceCard = document.createElement('div');
+                    resourceCard.className = 'card mb-2';
+                    resourceCard.innerHTML = `
+                        <div class="card-body">
+                            <h6 class="card-title">${resource.title}</h6>
+                            <p class="card-text small">${resource.description}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="badge bg-info">${resource.resource_type}</span>
+                                    <span class="badge bg-secondary">${resource.difficulty_level}</span>
+                                </div>
+                                <div>
+                                    <span class="badge bg-success">Quality: ${(resource.quality_score * 100).toFixed(0)}%</span>
+                                </div>
+                            </div>
+                            <a href="${resource.url}" target="_blank" class="btn btn-sm btn-outline-primary mt-2">
+                                <i class="fas fa-external-link-alt me-1"></i>View Resource
+                            </a>
+                        </div>
+                    `;
+                    resultsList.appendChild(resourceCard);
+                });
+            } else {
+                const infoAlert = document.createElement('div');
+                infoAlert.className = 'alert alert-info';
+                infoAlert.innerHTML = `
+                    <i class="fas fa-info me-2"></i>
+                    All ${data.discovered_resources.length} discovered resources already exist in the database.
+                `;
+                resultsList.appendChild(infoAlert);
+            }
+            
+            resultsDiv.classList.remove('d-none');
+            
+            // Refresh page after successful discovery
+            setTimeout(() => {
+                location.reload();
+            }, 3000);
+        } else {
+            throw new Error(data.error || 'Unknown error occurred');
+        }
+    } catch (error) {
+        progressDiv.classList.add('d-none');
+        console.error('Error in resource discovery:', error);
+        alert('Error: ' + error.message);
+    }
+}
+
+function importSampleData() {
+    if (confirm('This will import sample skills and resources from the AI-Horizon analysis data. Continue?')) {
+        // Show loading state
+        const btn = event.target;
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Importing...';
+        btn.disabled = true;
+        
+        // Simulate import process
+        setTimeout(() => {
+            alert('Sample data import functionality will be implemented in the next phase.');
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }, 2000);
+    }
+}
+</script>
+{% endblock %} 
